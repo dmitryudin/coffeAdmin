@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:coffe_admin/Orders/Orders.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'HomePage/HomePage.dart';
@@ -21,11 +22,9 @@ class MyWidget extends State {
 
   int index = 0;
   List<Widget> Screens = [
-    Scaffold(body: HomePage()),
     HomePage(),
     HomePage(),
-    HomePage(),
-    HomePage(),
+    Orders(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -47,16 +46,8 @@ class MyWidget extends State {
             label: 'Заказы',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Избранное',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_shopping_cart),
-            label: 'Корзина',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Профиль',
+            label: 'История заказов',
           ),
         ],
       ),

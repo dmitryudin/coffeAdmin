@@ -6,24 +6,6 @@ import 'package:flutter/widgets.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgets = [];
-    for (int i = 0; i < 30; i++) {
-      widgets.add(Card(
-          child: Column(children: [
-        CachedNetworkImage(
-            imageUrl:
-                'https://www.thespruceeats.com/thmb/iYCclWmk5rE1gLdE--uYELPhTL4=/5760x3840/filters:no_upscale():max_bytes(150000):strip_icc()/fancy-raspberry-mousse-cake-dessert-462334687-813bea322cfb4b3184cad39f2b201072.jpg'),
-        //Text('nothing'),
-        const ListTile(
-          tileColor: Colors.orange,
-          title: Text(
-            "Тортики слоёные",
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-      ])));
-    }
-
     List<Widget> cof = [];
     for (int i = 0; i < 30; i++) {
       cof.add(Card(
@@ -43,35 +25,51 @@ class HomePage extends StatelessWidget {
     }
     var width = MediaQuery.of(context).size.width;
     // TODO: implement build
-    return Scaffold(
-        body: ListView(children: [
+    return CustomScrollView(slivers: <Widget>[
+      SliverAppBar(
+        pinned: false,
+        snap: false,
+        floating: true,
+        expandedHeight: 160.0,
+        flexibleSpace: FlexibleSpaceBar(
+          title: Text('SliverAppBar'),
+          background: Carousel(),
+        ),
+      ),
+      SliverList(delegate:
+          SliverChildBuilderDelegate((BuildContext context, int index) {
+        return GridView.count(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            children: cof);
+      })),
+    ]);
+
+    /*ListView(children: [
       Carousel(),
-      DefaultTabController(
-          length: 2,
+      Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 0, 40, 160),
+                  Color.fromARGB(255, 79, 118, 247),
+                ],
+              )),
           child: Column(children: [
-            const TabBar(
-              indicatorColor: Colors.red,
-              labelColor: Colors.black,
-              tabs: [
-                Tab(icon: Icon(Icons.coffee)),
-                Tab(icon: Icon(Icons.cake)),
-              ],
+            SizedBox(
+              height: 26,
             ),
-            Container(
-                height: width * widgets.length / 4,
-                child: TabBarView(children: [
-                  GridView.count(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      children: cof),
-                  GridView.count(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      children: widgets),
-                ]))
-          ])),
-    ]));
+            GridView.count(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                children: cof),
+          ]))
+    ]);*/
   }
 }

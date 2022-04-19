@@ -1,17 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'BasicObject.dart';
-import 'Coffe.dart';
 
-class CoffeHouse with ChangeNotifier implements BasicObject {
+import 'BasicObject.dart';
+
+class Coffe with ChangeNotifier implements BasicObject {
   @override
   bool flagOfBusy = false;
+  String picture = '';
   String name = '';
-  String token = '';
-  String description = '';
-  List<Coffe> coffe = [];
-  List<String> pictures = [];
-
-  void sendData() {}
+  double price = 0.0;
 
   @override
   void clearData() {
