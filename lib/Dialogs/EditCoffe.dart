@@ -6,7 +6,7 @@ class EditCoffeDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Success"),
-      content: Text("Saved successfully"),
+      content: Text("Saved"),
     );
     // TODO: implement build
   }
