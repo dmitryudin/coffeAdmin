@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     List<Widget> cof = [];
     for (int i = 0; i < 30; i++) {
       cof.add(Card(
@@ -27,15 +28,43 @@ class HomePage extends StatelessWidget {
     // TODO: implement build
     return CustomScrollView(slivers: <Widget>[
       SliverAppBar(
-        pinned: false,
-        snap: false,
-        floating: true,
-        expandedHeight: 160.0,
-        flexibleSpace: FlexibleSpaceBar(
-          title: Text('SliverAppBar'),
-          background: Carousel(),
-        ),
-      ),
+          pinned: false,
+          snap: false,
+          floating: true,
+          expandedHeight: height / 3.5,
+          flexibleSpace: Stack(children: [
+            Positioned(
+                child: FlexibleSpaceBar(
+                  title: Text('#THEFIR'),
+                  background: Carousel(),
+                ),
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0),
+            Positioned(
+              child: IconButton(
+                  icon: Icon(Icons.edit_outlined, color: Colors.red),
+                  onPressed: () {}),
+              top: 20,
+              right: 0,
+            ),
+            Positioned(
+              child: Container(
+                height: 50,
+                //child: Card(),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
+                ),
+              ),
+              top: height / 3.3,
+              right: 0,
+              left: 0,
+            ),
+          ])),
       SliverList(delegate:
           SliverChildBuilderDelegate((BuildContext context, int index) {
         return GridView.count(

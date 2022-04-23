@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'BasicObject.dart';
-import 'Coffe.dart';
+import 'CoffeObject.dart';
 
 class CoffeHouse with ChangeNotifier implements BasicObject {
   @override
@@ -11,7 +11,9 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
   List<Coffe> coffe = [];
   List<String> pictures = [];
 
-  void sendData() {}
+  void updateMainInformation() {}
+
+  void updateCoffeHouseImages(List<String> pictures) {}
 
   @override
   void clearData() {
