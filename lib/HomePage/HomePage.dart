@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffe_admin/Dialogs/EditCarousel.dart';
 import 'package:coffe_admin/HomePage/Carousel.dart';
+import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -45,7 +48,16 @@ class HomePage extends StatelessWidget {
             Positioned(
               child: IconButton(
                   icon: Icon(Icons.edit_outlined, color: Colors.red),
-                  onPressed: () {}),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return EditCarouselDialog(
+                            Provider.of<CoffeHouse>(context, listen: true)
+                                .pictures);
+                      },
+                    );
+                  }),
               top: 20,
               right: 0,
             ),
@@ -74,31 +86,5 @@ class HomePage extends StatelessWidget {
             children: cof);
       })),
     ]);
-
-    /*ListView(children: [
-      Carousel(),
-      Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color.fromARGB(255, 0, 40, 160),
-                  Color.fromARGB(255, 79, 118, 247),
-                ],
-              )),
-          child: Column(children: [
-            SizedBox(
-              height: 26,
-            ),
-            GridView.count(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                children: cof),
-          ]))
-    ]);*/
   }
 }
