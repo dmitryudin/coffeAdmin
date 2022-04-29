@@ -5,21 +5,21 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class PictureWidget extends StatefulWidget {
-  String url = '';
+  var baseClass;
 
-  PictureWidget({required this.url, Key? key}) : super(key: key);
+  PictureWidget(this.baseClass);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return MyPicture(url);
+    return MyPicture(baseClass);
   }
 }
 
 class MyPicture extends State<PictureWidget> {
-  String url = '';
+  var baseClass;
 
-  MyPicture(this.url);
+  MyPicture(this.baseClass);
   final ImagePicker _picker = ImagePicker();
   XFile? image;
   var myImg;
@@ -34,18 +34,18 @@ class MyPicture extends State<PictureWidget> {
     );
 
     return GestureDetector(
-        onTap: () async {
-          image = await _picker.pickImage(
-            source: ImageSource.gallery,
-            imageQuality: 50,
-          );
+      onTap: () async {
+        image = await _picker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 50,
+        );
 
-          setState(() {
-            // setImage();
-          });
-        },
-        child: Column(
-          children: <Widget>[myImg],
-        ));
+        setState(() {
+          baseClass.images.add(image!.path);
+          baseClass.setState(() {});
+        });
+      },
+      child: myImg,
+    );
   }
 }

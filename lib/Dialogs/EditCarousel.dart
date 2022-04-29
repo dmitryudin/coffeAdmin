@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffe_admin/MyWidgets/MyPicture.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +44,7 @@ class MyImage extends StatelessWidget {
           //Icon(Icons.close), height: 50, width: 50),
           Card(
             color: Colors.blue,
-            child: Image.file(
-              file: File(fileName: url),
-              height: 500,
-              imageUrl: url,
-            ),
+            child: Image.file(File(url), height: 500),
           ),
           Positioned(
               top: 15,
@@ -75,14 +74,19 @@ class EditCarouselDialog extends StatefulWidget {
 
 class EditCarouselD extends State<EditCarouselDialog> {
   List<String> images = [];
-  List<Widget> imagesWidget = [];
+
   EditCarouselD(this.images) {
     images = images.toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    imagesWidget = images.map((image) => MyImage(image, this)).toList();
+    List<Widget> imagesWidget = [];
+    for (int i = 0; i < images.length; i++) {
+      imagesWidget.add(MyImage(images[i], this));
+    }
+    imagesWidget.add(PictureWidget(this));
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return AlertDialog(
