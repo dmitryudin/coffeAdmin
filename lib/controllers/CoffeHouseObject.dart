@@ -1,18 +1,47 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'BasicObject.dart';
 import 'CoffeObject.dart';
+import 'OrdersObject.dart';
+import 'RestController.dart';
 
 class CoffeHouse with ChangeNotifier implements BasicObject {
   @override
   bool flagOfBusy = false;
+  int id = -1;
   String name = '';
-  String token = '';
+  String phone = '';
+  String email = '';
   String description = '';
-  List<Coffe> coffe = [];
-  List<String> pictures = [
-    'https://avatars.mds.yandex.net/get-zen_doc/1874839/pub_5dcd7bfccd7152643c8dcf60_5dcd7c1777c1617acad09dd6/scale_1200',
-    'https://avatars.mds.yandex.net/get-zen_doc/1874839/pub_5dcd7bfccd7152643c8dcf60_5dcd7c1777c1617acad09dd6/scale_1200'
-  ];
+  String address = '';
+  double rating = 5.5;
+  String token = '';
+  List<String> photos = [];
+  List<Coffe> coffes = [];
+  List<Order> orders = [];
+
+  CoffeHouse() {
+    getMainData();
+  }
+  getMainData() {
+    RestController.send_request(
+        class_obj: this, controller: 'coffehouse_get', data: '');
+    /*основная информация включает в себя основные текстовые данные и меню*/
+  }
+
+  void onMainDataAccepted(data) {
+    Map<String, dynamic> json = jsonDecode(data);
+    print(json);
+    name = json['name'];
+    phone = json['phone'];
+    email = json['email'];
+    description = json['description'];
+    address = json['address'];
+    photos = json['photos'];
+    coffes = json['coffes'];
+    notifyListeners();
+  }
 
   void updateMainInformation() {}
 
@@ -29,6 +58,14 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
 
   @override
   void onDataAccepted(data, controller) {
+    switch (controller) {
+      case 'coffehouse_get':
+        onMainDataAccepted(data);
+        break;
+      case 'myPI':
+        // do something else
+        break;
+    }
     // TODO: implement onDataAccepted
   }
 }

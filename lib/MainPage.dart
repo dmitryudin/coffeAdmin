@@ -1,8 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:coffe_admin/Orders/Orders.dart';
+import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'HomePage/HomePage.dart';
 
 class MainPage extends StatefulWidget {
@@ -16,6 +18,7 @@ class MainPage extends StatefulWidget {
 class MyWidget extends State {
   void _onItemTapped(ind) {
     setState(() {
+      Provider.of<CoffeHouse>(context, listen: false).getMainData();
       index = ind;
     });
   }

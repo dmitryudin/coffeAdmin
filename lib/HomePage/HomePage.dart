@@ -38,7 +38,8 @@ class HomePage extends StatelessWidget {
           flexibleSpace: Stack(children: [
             Positioned(
                 child: FlexibleSpaceBar(
-                  title: Text('#THEFIR'),
+                  title:
+                      Text(Provider.of<CoffeHouse>(context, listen: true).name),
                   background: Carousel(),
                 ),
                 top: 0,
@@ -54,7 +55,7 @@ class HomePage extends StatelessWidget {
                       builder: (BuildContext context) {
                         return EditCarouselDialog(
                             Provider.of<CoffeHouse>(context, listen: true)
-                                .pictures);
+                                .photos);
                       },
                     );
                   }),
