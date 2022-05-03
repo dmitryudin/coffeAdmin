@@ -20,8 +20,9 @@ class MyWidget extends State<Carousel> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    List<Widget> imagesWidget = Provider.of<CoffeHouse>(context, listen: true)
-        .photos
+    List<String> imagesPath =
+        Provider.of<CoffeHouse>(context, listen: true).photos;
+    List<Widget> imagesWidget = imagesPath
         .map((imageUrl) => Container(
               child: CachedNetworkImage(
                 imageUrl: imageUrl,
