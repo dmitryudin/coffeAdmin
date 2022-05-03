@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Это написал я
     double height = MediaQuery.of(context).size.height;
     List<Widget> cof = [];
     for (int i = 0; i < 30; i++) {
