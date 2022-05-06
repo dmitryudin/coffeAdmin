@@ -31,6 +31,26 @@ class MyWidget extends State<Carousel> {
               ),
             ))
         .toList();
+    if (imagesWidget.isEmpty) {
+      imagesWidget.add(Container(
+        child: GestureDetector(
+          child: Icon(
+            Icons.add_a_photo,
+            size: width / 1.8,
+            color: Colors.red,
+          ),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return EditCarouselDialog(
+                    Provider.of<CoffeHouse>(context, listen: true).photos);
+              },
+            );
+          },
+        ),
+      ));
+    }
     return CarouselSlider(
         items: imagesWidget,
         carouselController: _controller,

@@ -25,13 +25,12 @@ class MyPicture extends State<PictureWidget> {
   var myImg;
   @override
   Widget build(BuildContext context) {
-    myImg = Column(
-      children: [
-        Text('Нажмите'),
-        Icon(Icons.add_a_photo),
-        Text('чтобы добавить фото', textAlign: TextAlign.center),
-      ],
-    );
+    myImg = Card(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text('Нажмите'),
+      Icon(Icons.add_a_photo, size: 60),
+      Text('чтобы добавить фото', textAlign: TextAlign.center),
+    ]));
 
     return GestureDetector(
       onTap: () async {

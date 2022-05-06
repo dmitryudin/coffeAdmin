@@ -14,51 +14,43 @@ class MyImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if (url.contains('http'))
-      return Stack(
-        children: [
-          //Icon(Icons.close), height: 50, width: 50),
-          Card(
-            color: Colors.blue,
-            child: CachedNetworkImage(
-              height: 500,
-              imageUrl: url,
-            ),
-          ),
-          Positioned(
-              top: 15,
-              right: 15,
-              child: IconButton(
-                icon: Icon(Icons.close_sharp),
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Stack(
+      children: [
+        Card(
+            color: Colors.white,
+            child: (url.contains('http'))
+                ? CachedNetworkImage(
+                    width: width / 2.2,
+                    height: height / 5,
+                    imageUrl: url,
+                  )
+                : Image.file(
+                    File(url),
+                    width: width / 2.2,
+                    height: height / 5,
+                  )),
+        Positioned(
+            top: 10,
+            right: -15,
+            child: RawMaterialButton(
+              onPressed: () {
+                baseClass.images.remove(url);
+                baseClass.setState(() {});
+              },
+              elevation: 2.0,
+              fillColor: Colors.blue[100],
+              child: Icon(
+                Icons.close_sharp,
                 color: Colors.red,
-                onPressed: () {
-                  baseClass.images.remove(url);
-                  baseClass.setState(() {});
-                },
-              )),
-        ],
-      );
-    else
-      return Stack(
-        children: [
-          //Icon(Icons.close), height: 50, width: 50),
-          Card(
-            color: Colors.blue,
-            child: Image.file(File(url), height: 500),
-          ),
-          Positioned(
-              top: 15,
-              right: 15,
-              child: IconButton(
-                icon: Icon(Icons.close_sharp),
-                color: Colors.red,
-                onPressed: () {
-                  baseClass.images.remove(url);
-                  baseClass.setState(() {});
-                },
-              )),
-        ],
-      );
+                size: 15.0,
+              ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(),
+            ))
+      ],
+    );
   }
 }
 
@@ -79,6 +71,11 @@ class EditCarouselD extends State<EditCarouselDialog> {
     images = images.toList();
   }
 
+  Widget sendButton = TextButton(
+    child: Text("Отправить"),
+    onPressed: () {},
+  );
+
   @override
   Widget build(BuildContext context) {
     List<Widget> imagesWidget = [];
@@ -92,15 +89,18 @@ class EditCarouselD extends State<EditCarouselDialog> {
     return AlertDialog(
       insetPadding: EdgeInsets.all(10),
       title: Text("Редактировать галерею"),
+      actions: [sendButton],
+      actionsAlignment: MainAxisAlignment.center,
       content: Container(
           height: height * 0.9,
           width: width * 0.96,
-          child: GridView.count(
-
-              //physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              children: imagesWidget)),
+          child: ListView(children: [
+            GridView.count(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                children: imagesWidget),
+          ])),
     );
     // TODO: implement build
   }
