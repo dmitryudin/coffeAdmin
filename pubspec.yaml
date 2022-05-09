@@ -38,6 +38,7 @@ dependencies:
   cached_network_image: ^3.2.0
   image_picker: 
   provider: 
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:

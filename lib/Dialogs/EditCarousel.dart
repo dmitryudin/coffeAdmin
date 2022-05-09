@@ -3,14 +3,37 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/MyWidgets/MyPicture.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
+import 'package:coffe_admin/controllers/RestController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MyImage extends StatelessWidget {
+class MyImage extends StatefulWidget {
+  String url = '';
+  late EditCarouselD baseClass;
+  MyImage(this.url, this.baseClass);
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return MyWidget(url, baseClass);
+  }
+}
+
+class MyWidget extends State<MyImage> {
   String url = '';
   EditCarouselD baseClass;
-  MyImage(this.url, this.baseClass);
+  double progress = 0;
+  MyWidget(this.url, this.baseClass) {
+    if (!url.contains('http')) {
+      RestController.uploadFile(class_obj: this, filename: this.url);
+    }
+  }
+  setProgress(double progress) {
+    setState(() {
+      this.progress = progress;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -48,7 +71,14 @@ class MyImage extends StatelessWidget {
               ),
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(),
-            ))
+            )),
+        Positioned(
+            top: 100,
+            right: 100,
+            child: CircularProgressIndicator(
+              value: progress,
+              semanticsLabel: 'Linear progress indicator',
+            )),
       ],
     );
   }

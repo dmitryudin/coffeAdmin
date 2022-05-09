@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'BasicObject.dart';
+import 'MultiPart.dart';
 
 Map map = {
   'coffehouse_get': "/coffehouse/get_coffe_house",
@@ -33,5 +35,28 @@ class RestController {
         throw Exception('Error of Internet connection');
       }
     } catch (e) {}
+  }
+
+  static uploadFile(
+      {required dynamic class_obj, required String filename}) async {
+    var uri = Uri.parse('http://thefir.ddns.net:5050//coffehouse/upload_file');
+
+    final request = MultipartRequest(
+      'POST',
+      uri,
+      onProgress: (int bytes, int total) {
+        class_obj.setProgress(bytes / total);
+      },
+    );
+    request.headers['HeaderKey'] = 'header_value';
+    request.fields['form_key'] = 'form_value';
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        filename,
+        contentType: MediaType('image', 'jpeg'),
+      ),
+    );
+    final streamedResponse = await request.send();
   }
 }
