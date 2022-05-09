@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'BasicObject.dart';
-import 'CoffeObject.dart';
+import 'DishObject.dart';
 import 'OrdersObject.dart';
 import 'RestController.dart';
 
@@ -18,7 +18,7 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
   double rating = 5.5;
   String token = '';
   List<String> photos = [];
-  List<Coffe> coffes = [];
+  List<Dish> coffes = [];
   List<Order> orders = [];
 
   CoffeHouse() {

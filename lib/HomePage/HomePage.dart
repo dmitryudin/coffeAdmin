@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/Dialogs/EditCarousel.dart';
 import 'package:coffe_admin/HomePage/Carousel.dart';
+import 'package:coffe_admin/HomePage/NewDish.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
+import 'package:coffe_admin/controllers/RestController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +13,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Это написал я
     double height = MediaQuery.of(context).size.height;
+    var coffes = Provider.of<CoffeHouse>(context, listen: true).coffes;
     List<Widget> cof = [];
-    for (int i = 0; i < 30; i++) {
+    for (var coffe in coffes) {
       cof.add(Card(
           child: Column(children: [
         CachedNetworkImage(
@@ -28,6 +31,7 @@ class HomePage extends StatelessWidget {
         ),
       ])));
     }
+    cof.add(NewDishWidget());
     var width = MediaQuery.of(context).size.width;
     // TODO: implement build
     return CustomScrollView(slivers: <Widget>[
@@ -79,14 +83,21 @@ class HomePage extends StatelessWidget {
               left: 0,
             ),
           ])),
-      SliverList(delegate:
-          SliverChildBuilderDelegate((BuildContext context, int index) {
-        return GridView.count(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            children: cof);
-      })),
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            ListView.builder(
+                itemCount: cof.length,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Row(
+                    children: cof,
+                  );
+                })
+          ],
+        ),
+      )
     ]);
   }
 }
