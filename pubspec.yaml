@@ -36,8 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   carousel_slider: 
   cached_network_image: ^3.2.0
-  image_picker: 
+  image_picker: ^0.8.4+7
   provider: 
+  awesome_notifications: ^0.6.21
 
 
 dev_dependencies:

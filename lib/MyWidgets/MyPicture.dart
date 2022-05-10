@@ -17,10 +17,10 @@ class PictureWidget extends StatefulWidget {
 }
 
 class MyPicture extends State<PictureWidget> {
-  var baseClass;
+  late var baseClass;
 
   MyPicture(this.baseClass);
-  final ImagePicker _picker = ImagePicker();
+  ImagePicker _picker = ImagePicker();
   XFile? image;
   var myImg;
   @override

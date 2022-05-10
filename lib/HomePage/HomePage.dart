@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coffe_admin/Dialogs/EditCarousel.dart';
+import 'package:coffe_admin/Dialogs/EditCarouselDialog.dart';
 import 'package:coffe_admin/HomePage/Carousel.dart';
 import 'package:coffe_admin/HomePage/NewDish.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
