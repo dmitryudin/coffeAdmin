@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/Dialogs/EditCarouselDialog.dart';
 import 'package:coffe_admin/HomePage/Carousel.dart';
-import 'package:coffe_admin/HomePage/NewDish.dart';
+import 'package:coffe_admin/HomePage/NewDishWidget.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:coffe_admin/controllers/RestController.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
       ])));
     }
     cof.add(NewDishWidget());
-    var width = MediaQuery.of(context).size.width;
+
     // TODO: implement build
     return CustomScrollView(slivers: <Widget>[
       SliverAppBar(
