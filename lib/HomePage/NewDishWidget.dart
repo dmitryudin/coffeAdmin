@@ -15,10 +15,14 @@ class NewDishWidget extends StatelessWidget {
                     return EditDishDialog();
                   });
             },
-            child: Column(
-              children: [
-                Icon(Icons.coffee, size: width / 2),
-              ],
-            )));
+            child: Container(
+                width: width / 2,
+                child: Column(
+                  children: [
+                    Text('Нажмите,'),
+                    Icon(Icons.coffee, size: width / 3),
+                    Text('чтобы добавить кофе'),
+                  ],
+                ))));
   }
 }

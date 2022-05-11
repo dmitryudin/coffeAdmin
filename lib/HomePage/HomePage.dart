@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/Dialogs/EditCarouselDialog.dart';
 import 'package:coffe_admin/HomePage/Carousel.dart';
+import 'package:coffe_admin/HomePage/DishView.dart';
 import 'package:coffe_admin/HomePage/NewDishWidget.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:coffe_admin/controllers/RestController.dart';
@@ -31,8 +32,11 @@ class HomePage extends StatelessWidget {
         ),
       ])));
     }
+    for (int i = 0; i < 12; i++) {
+      cof.add(DishView(i));
+    }
     cof.add(NewDishWidget());
-
+    int i = -2;
     // TODO: implement build
     return CustomScrollView(slivers: <Widget>[
       SliverAppBar(
@@ -78,7 +82,7 @@ class HomePage extends StatelessWidget {
                       topRight: Radius.circular(25)),
                 ),
               ),
-              top: height / 3.3,
+              top: height / 3.4,
               right: 0,
               left: 0,
             ),
@@ -86,13 +90,21 @@ class HomePage extends StatelessWidget {
       SliverList(
         delegate: SliverChildListDelegate(
           [
+            Card(child: Text('Адрес')),
             ListView.builder(
-                itemCount: cof.length,
+                itemCount: (cof.length / 2).ceil().toInt(),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
+                  i = i + 2;
+                  if (cof.length - i == 1)
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [cof.last],
+                    );
                   return Row(
-                    children: cof,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [cof[i], cof[i + 1]],
                   );
                 })
           ],

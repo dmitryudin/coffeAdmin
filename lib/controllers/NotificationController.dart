@@ -2,7 +2,8 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
 class NotificationController {
-  Notification() {
+  NotificationController() {
+    print('start init');
     WidgetsFlutterBinding.ensureInitialized();
     AwesomeNotifications().initialize('resource://drawable/notification_icon', [
       // notification icon
@@ -28,6 +29,7 @@ class NotificationController {
 
       //add more notification type with different configuration
     ]);
+    print('inited');
   }
 
   void showNotification() async {
@@ -38,8 +40,8 @@ class NotificationController {
       //simgple notification
       id: 123,
       channelKey: 'basic', //set configuration wuth key "basic"
-      title: 'Настя!',
-      body: 'Я люблю тебя!',
+      title: 'Макс',
+      body: 'ПРИВЕД!',
 
       //largeIcon: 'asset://assets/images/elephant.jpg',
       //large icon will be displayed at right side

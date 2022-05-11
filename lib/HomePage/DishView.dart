@@ -17,11 +17,12 @@ class MyDishView extends State<DishView> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Container(
-      width: 150,
-      height: 250,
-      padding: const EdgeInsets.all(4.0),
-      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      width: width / 2.05,
+      height: height / 4,
+      padding: const EdgeInsets.only(top: 2.0),
+      margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0), color: Colors.grey[600]),
       child: Column(children: [
@@ -50,7 +51,7 @@ class MyDishView extends State<DishView> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            '300 мл',
+            ' 300 мл',
             textDirection: TextDirection.ltr,
             style: TextStyle(
               fontSize: 12,
