@@ -38,7 +38,7 @@ class MyWidget extends State<Carousel> {
         child: GestureDetector(
           child: Icon(
             Icons.add_a_photo,
-            size: width / 1.8,
+            size: height / 3,
             color: Colors.red,
           ),
           onTap: () {

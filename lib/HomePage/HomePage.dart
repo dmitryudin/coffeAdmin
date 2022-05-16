@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/Dialogs/EditCarouselDialog.dart';
 import 'package:coffe_admin/HomePage/Carousel.dart';
 import 'package:coffe_admin/HomePage/DishView.dart';
-import 'package:coffe_admin/HomePage/NewDishWidget.dart';
+import 'package:coffe_admin/MyWidgets/NewDishWidget.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:coffe_admin/controllers/RestController.dart';
 import 'package:flutter/material.dart';
@@ -16,22 +16,7 @@ class HomePage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     var coffes = Provider.of<CoffeHouse>(context, listen: true).coffes;
     List<Widget> cof = [];
-    for (var coffe in coffes) {
-      cof.add(Card(
-          child: Column(children: [
-        CachedNetworkImage(
-            imageUrl:
-                'https://wallbox.ru/wallpapers/main2/201725/14978928755948080b1a38d9.12077544.jpg'),
-        //Text('nothing'),
-        const ListTile(
-          tileColor: Colors.orange,
-          title: Text(
-            "Вкуснейший кофе",
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-      ])));
-    }
+    for (var coffe in coffes) {}
     for (int i = 0; i < 12; i++) {
       cof.add(DishView(i));
     }
@@ -73,7 +58,7 @@ class HomePage extends StatelessWidget {
             ),
             Positioned(
               child: Container(
-                height: 50,
+                height: 20,
                 //child: Card(),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -82,7 +67,7 @@ class HomePage extends StatelessWidget {
                       topRight: Radius.circular(25)),
                 ),
               ),
-              top: height / 3.4,
+              bottom: 0,
               right: 0,
               left: 0,
             ),
@@ -99,7 +84,7 @@ class HomePage extends StatelessWidget {
                   i = i + 2;
                   if (cof.length - i == 1)
                     return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [cof.last],
                     );
                   return Row(

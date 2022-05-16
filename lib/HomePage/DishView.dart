@@ -20,7 +20,7 @@ class MyDishView extends State<DishView> {
     double height = MediaQuery.of(context).size.height;
     return Container(
       width: width / 2.05,
-      height: height / 4,
+      // height: height / 3,
       padding: const EdgeInsets.only(top: 2.0),
       margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
       decoration: BoxDecoration(

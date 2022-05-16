@@ -8,6 +8,8 @@ import 'MultiPart.dart';
 
 Map map = {
   'coffehouse_get': "/coffehouse/get_coffe_house",
+  'delete_file': "/coffehouse/delete_file",
+  'update_coffe_house': '/coffehouse/update_coffe_house',
 };
 
 class RestController {
@@ -22,6 +24,7 @@ class RestController {
     class_obj.flagOfBusy = true;
     String address = 'http://thefir.ddns.net:5050';
     String url = address + map[controller].toString();
+    print(url);
     try {
       final response = await http.post(Uri.parse(url),
           headers: <String, String>{
@@ -30,6 +33,7 @@ class RestController {
           body: data);
       if (response.statusCode == 200) {
         class_obj.flagOfBusy = false;
+
         return class_obj.onDataAccepted(response.body, controller);
       } else {
         throw Exception('Error of Internet connection');
@@ -57,6 +61,11 @@ class RestController {
         contentType: MediaType('image', 'jpeg'),
       ),
     );
-    final streamedResponse = await request.send();
+    request.send().then((response) {
+      if (response.statusCode == 200)
+        response.stream.transform(utf8.decoder).listen((value) {
+          class_obj.onUploaded(value);
+        });
+    });
   }
 }

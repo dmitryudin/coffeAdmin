@@ -18,7 +18,7 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
   double rating = 5.5;
   String token = '';
   List<String> photos = [];
-  List<Dish> coffes = [];
+  List<Coffe> coffes = [];
   List<Order> orders = [];
 
   CoffeHouse() {
@@ -38,12 +38,35 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
     email = json['email'];
     description = json['description'];
     address = json['address'];
-    photos = json['photos'];
-    coffes = json['coffes'];
     notifyListeners();
   }
 
-  void updateMainInformation() {}
+  void createCoffe(Coffe coffe) {
+    RestController.send_request(
+        class_obj: this, controller: 'coffehouse_get', data: coffe.toJson());
+    /*основная информация включает в себя основные текстовые данные и меню*/
+  }
+
+  String toJson() {
+    Map<String, dynamic> data = {};
+
+    String address = '';
+
+    data['name'] = name;
+    data['phone'] = phone;
+    data['email'] = email;
+    data['description'] = description;
+    data['address'] = address;
+    data['photos'] = photos;
+    print(data);
+
+    return jsonEncode(data);
+  }
+
+  void updateMainInformation() {
+    RestController.send_request(
+        class_obj: this, controller: 'update_coffe_house', data: this.toJson());
+  }
 
   void updateCoffeHouseImages(List<String> pictures) {
     /*

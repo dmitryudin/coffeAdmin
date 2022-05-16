@@ -9,11 +9,11 @@ class NewDishWidget extends StatelessWidget {
     return Card(
         child: GestureDetector(
             onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return EditDishDialog();
-                  });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditDishDialog(),
+                  ));
             },
             child: Container(
                 width: width / 2,
