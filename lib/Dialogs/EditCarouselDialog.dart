@@ -70,12 +70,6 @@ class MyWidget extends State<MyImage> {
                 print(url);
                 baseClass.images.remove(url);
                 baseClass.setState(() {});
-                String payload = url;
-                payload = '{"url":"' + payload + '"}';
-                RestController.send_request(
-                    class_obj: BasicObject(),
-                    controller: 'delete_file',
-                    data: payload);
               },
               elevation: 2.0,
               fillColor: Colors.blue[100],

@@ -33,12 +33,15 @@ class RestController {
           body: data);
       if (response.statusCode == 200) {
         class_obj.flagOfBusy = false;
+        print(response.body);
 
         return class_obj.onDataAccepted(response.body, controller);
       } else {
         throw Exception('Error of Internet connection');
       }
-    } catch (e) {}
+    } catch (e) {
+      print('NO!');
+    }
   }
 
   static uploadFile(

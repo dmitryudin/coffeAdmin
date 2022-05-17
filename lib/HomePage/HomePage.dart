@@ -75,7 +75,21 @@ class HomePage extends StatelessWidget {
       SliverList(
         delegate: SliverChildListDelegate(
           [
-            Card(child: Text('Адрес')),
+            Card(
+                child: Column(children: [
+              Row(children: [
+                Text('Адрес   '),
+                Text(Provider.of<CoffeHouse>(context, listen: true).address),
+              ]),
+              Row(children: [
+                Text('Телефон   '),
+                Text(Provider.of<CoffeHouse>(context, listen: true).phone),
+              ]),
+              Row(children: [
+                Text('Email   '),
+                Text(Provider.of<CoffeHouse>(context, listen: true).email),
+              ]),
+            ])),
             ListView.builder(
                 itemCount: (cof.length / 2).ceil().toInt(),
                 physics: NeverScrollableScrollPhysics(),

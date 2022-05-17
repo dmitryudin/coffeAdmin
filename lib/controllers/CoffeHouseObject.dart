@@ -36,8 +36,11 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
     name = json['name'];
     phone = json['phone'];
     email = json['email'];
-    description = json['description'];
+    //description = json['description'];
     address = json['address'];
+    List d = json['photos'];
+    photos = d.map((e) => e.toString()).toList();
+
     notifyListeners();
   }
 
