@@ -33,9 +33,19 @@ class EditDishDialog extends StatefulWidget {
 class EditDishDialogState extends State<EditDishDialog> {
   String image = '';
   Coffe coffe = Coffe();
+  EditDishDialogState();
 
   @override
   Widget build(BuildContext context) {
+    AddPicture addPic = AddPicture(
+        url: 'dsd',
+        onFileLoaded: (path) {
+          print('Worked' + path);
+        },
+        onFileUploaded: (url) {
+          print('picture uploaded!');
+          coffe.picture = url;
+        });
     List<Widget> propertiesWidget = [];
     List<Widget> volumesWidget = [];
     for (Property property in coffe.properties) {
@@ -70,6 +80,7 @@ class EditDishDialogState extends State<EditDishDialog> {
     }
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       //title: Text("Редактирование меню"),
       appBar: AppBar(
@@ -83,7 +94,7 @@ class EditDishDialogState extends State<EditDishDialog> {
                 height: 25,
               ),
               Divider(color: Colors.black),
-              AddPicture(this),
+              addPic,
               Divider(color: Colors.black),
               Container(
                   padding:
@@ -145,6 +156,7 @@ class EditDishDialogState extends State<EditDishDialog> {
               Divider(color: Colors.black),
               ElevatedButton(
                   onPressed: () {
+                    print('debug' + addPic.url);
                     Provider.of<CoffeHouse>(context, listen: false)
                         .createCoffe(coffe);
 

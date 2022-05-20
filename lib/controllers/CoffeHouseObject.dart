@@ -46,8 +46,7 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
 
   void createCoffe(Coffe coffe) {
     RestController.send_request(
-        class_obj: this, controller: 'coffehouse_get', data: coffe.toJson());
-    /*основная информация включает в себя основные текстовые данные и меню*/
+        class_obj: this, controller: 'create_coffe', data: coffe.toJson());
   }
 
   String toJson() {

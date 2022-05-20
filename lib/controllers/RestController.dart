@@ -10,6 +10,7 @@ Map map = {
   'coffehouse_get': "/coffehouse/get_coffe_house",
   'delete_file': "/coffehouse/delete_file",
   'update_coffe_house': '/coffehouse/update_coffe_house',
+  'create_coffe': '/coffehouse/create_coffe',
 };
 
 class RestController {
