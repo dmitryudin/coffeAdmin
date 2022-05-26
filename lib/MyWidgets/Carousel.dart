@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coffe_admin/Dialogs/EditCarouselDialog.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
-import 'package:coffe_admin/controllers/NotificationController.dart';
+import 'package:coffe_admin/utils/Notifications/NotificationController.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

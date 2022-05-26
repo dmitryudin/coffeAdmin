@@ -16,7 +16,7 @@ class NewDishWidget extends StatelessWidget {
                   ));
             },
             child: Container(
-                width: width / 2,
+                width: width / 2.2,
                 child: Column(
                   children: [
                     Text('Нажмите,'),

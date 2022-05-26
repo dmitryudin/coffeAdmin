@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/Dialogs/EditCarouselDialog.dart';
-import 'package:coffe_admin/HomePage/Carousel.dart';
-import 'package:coffe_admin/HomePage/DishView.dart';
+import 'package:coffe_admin/MyWidgets/Carousel.dart';
+import 'package:coffe_admin/MyWidgets/DishView.dart';
 import 'package:coffe_admin/MyWidgets/NewDishWidget.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
-import 'package:coffe_admin/controllers/RestController.dart';
+import 'package:coffe_admin/utils/Network/RestController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -16,10 +16,10 @@ class HomePage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     var coffes = Provider.of<CoffeHouse>(context, listen: true).coffes;
     List<Widget> cof = [];
-    for (var coffe in coffes) {}
-    for (int i = 0; i < 12; i++) {
-      cof.add(DishView(i));
+    for (var coffe in coffes) {
+      cof.add(DishView(coffe, key: UniqueKey()));
     }
+
     cof.add(NewDishWidget());
     int i = -2;
     // TODO: implement build

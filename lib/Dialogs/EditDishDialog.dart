@@ -1,10 +1,9 @@
 import 'package:coffe_admin/Dialogs/AddPropertyDialog.dart';
 import 'package:coffe_admin/MyWidgets/AddPicture.dart';
 import 'package:coffe_admin/MyWidgets/DropListWrapper.dart';
-import 'package:coffe_admin/MyWidgets/MyPicture.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:coffe_admin/controllers/DishObject.dart';
-import 'package:coffe_admin/controllers/RestController.dart';
+import 'package:coffe_admin/utils/Network/RestController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,12 +32,14 @@ class EditDishDialog extends StatefulWidget {
 class EditDishDialogState extends State<EditDishDialog> {
   String image = '';
   Coffe coffe = Coffe();
-  EditDishDialogState();
 
+  EditDishDialogState() {
+    coffe.category = caterories[0];
+  }
   @override
   Widget build(BuildContext context) {
     AddPicture addPic = AddPicture(
-        url: 'dsd',
+        url: '',
         onFileLoaded: (path) {
           print('Worked' + path);
         },

@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'BasicObject.dart';
+import '../configuration/NetworkConfiguration.dart';
 import 'DishObject.dart';
 import 'OrdersObject.dart';
-import 'RestController.dart';
+import '../utils/Network/RestController.dart';
 
-class CoffeHouse with ChangeNotifier implements BasicObject {
+class CoffeHouse with ChangeNotifier {
   @override
   bool flagOfBusy = false;
   int id = -1;
@@ -23,10 +22,33 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
 
   CoffeHouse() {
     getMainData();
+    //getCoffes();
   }
+
+  void getCoffes() {
+    RestController().sendPostRequest(
+        onComplete: ({required String data}) {
+          List<dynamic> json = jsonDecode(data);
+          this.coffes.clear();
+          for (var coffe in json) {
+            this.coffes.add(Coffe.fromJson(jsonEncode(coffe)));
+          }
+          notifyListeners();
+        },
+        onError: ({required String data}) {},
+        controller: 'coffe_get',
+        data: '');
+  }
+
   getMainData() {
-    RestController.send_request(
-        class_obj: this, controller: 'coffehouse_get', data: '');
+    RestController().sendPostRequest(
+        onComplete: ({required String data}) {
+          onMainDataAccepted(data);
+          getCoffes();
+        },
+        onError: ({required String data}) {},
+        controller: 'coffehouse_get',
+        data: '');
     /*основная информация включает в себя основные текстовые данные и меню*/
   }
 
@@ -45,15 +67,32 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
   }
 
   void createCoffe(Coffe coffe) {
-    RestController.send_request(
-        class_obj: this, controller: 'create_coffe', data: coffe.toJson());
+    RestController().sendPostRequest(
+        onComplete: ({required String data}) {
+          getCoffes();
+        },
+        onError: ({required String data}) {},
+        controller: 'create_coffe',
+        data: coffe.toJson());
+  }
+
+  void deleteCoffe(Coffe coffe) {
+    print(coffe.id);
+    coffes.remove(coffe);
+    RestController().sendPostRequest(
+        onComplete: ({required String data}) {
+          getCoffes();
+        },
+        onError: ({required String data}) {},
+        controller: 'coffe_delete',
+        data: '{"id":' + coffe.id.toString() + '}');
+
+    notifyListeners();
   }
 
   String toJson() {
     Map<String, dynamic> data = {};
-
     String address = '';
-
     data['name'] = name;
     data['phone'] = phone;
     data['email'] = email;
@@ -61,36 +100,14 @@ class CoffeHouse with ChangeNotifier implements BasicObject {
     data['address'] = address;
     data['photos'] = photos;
     print(data);
-
     return jsonEncode(data);
   }
 
   void updateMainInformation() {
-    RestController.send_request(
-        class_obj: this, controller: 'update_coffe_house', data: this.toJson());
-  }
-
-  void updateCoffeHouseImages(List<String> pictures) {
-    /*
-    метод принимает на вход 
-    */
-  }
-
-  @override
-  void clearData() {
-    // TODO: implement clearData
-  }
-
-  @override
-  void onDataAccepted(data, controller) {
-    switch (controller) {
-      case 'coffehouse_get':
-        onMainDataAccepted(data);
-        break;
-      case 'myPI':
-        // do something else
-        break;
-    }
-    // TODO: implement onDataAccepted
+    RestController().sendPostRequest(
+        onComplete: ({required String data}) {},
+        onError: ({required String data}) {},
+        controller: 'update_coffe_house',
+        data: this.toJson());
   }
 }
