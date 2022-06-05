@@ -39,6 +39,9 @@ dependencies:
   image_picker: ^0.8.4+7
   provider: 
   awesome_notifications: ^0.6.21
+  sberbank_acquiring: 2.0.0
+  hive: ^2.0.6
+  hive_flutter: ^1.1.0
 
 
 dev_dependencies:

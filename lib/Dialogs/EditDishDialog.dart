@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/Network/MultiPart.dart';
+
 // TODO можно в будущем сделать категории подгружаемыми с интернета
 List<String> caterories = [
   'Чёрный кофе',
@@ -31,6 +33,7 @@ class EditDishDialog extends StatefulWidget {
 
 class EditDishDialogState extends State<EditDishDialog> {
   String image = '';
+  bool isCancel = false;
   Coffe coffe = Coffe();
 
   EditDishDialogState() {
@@ -164,9 +167,24 @@ class EditDishDialogState extends State<EditDishDialog> {
                     Navigator.pop(context);
                   },
                   child: Text('Сохранить')),
+              ElevatedButton(
+                  onPressed: () {
+                    isCancel = true;
+                    Navigator.pop(context);
+                  },
+                  child: Text('Отмена')),
             ]))
       ]),
     );
     // TODO: implement build
+  }
+
+  @override
+  void dispose() {
+    if (isCancel) {
+      RemoteFileManager().deleteFile(url: coffe.picture);
+    }
+    print('dispose');
+    super.dispose();
   }
 }

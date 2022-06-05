@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import '../configuration/NetworkConfiguration.dart';
 import 'DishObject.dart';
 import 'OrdersObject.dart';
 import '../utils/Network/RestController.dart';
@@ -22,12 +21,12 @@ class CoffeHouse with ChangeNotifier {
 
   CoffeHouse() {
     getMainData();
-    //getCoffes();
+    getCoffes();
   }
 
   void getCoffes() {
-    RestController().sendPostRequest(
-        onComplete: ({required String data}) {
+    RestController().sendGetRequest(
+        onComplete: ({required String data, required int statusCode}) {
           List<dynamic> json = jsonDecode(data);
           this.coffes.clear();
           for (var coffe in json) {
@@ -35,19 +34,20 @@ class CoffeHouse with ChangeNotifier {
           }
           notifyListeners();
         },
-        onError: ({required String data}) {},
-        controller: 'coffe_get',
-        data: '');
+        onError: ({required int statusCode}) {},
+        controller: 'coffes',
+        data: "",
+        accessToken: '');
   }
 
   getMainData() {
-    RestController().sendPostRequest(
-        onComplete: ({required String data}) {
+    RestController().sendGetRequest(
+        onComplete: ({required String data, required int statusCode}) {
           onMainDataAccepted(data);
           getCoffes();
         },
-        onError: ({required String data}) {},
-        controller: 'coffehouse_get',
+        onError: ({required int statusCode}) {},
+        controller: 'coffehouse',
         data: '');
     /*основная информация включает в себя основные текстовые данные и меню*/
   }
@@ -62,29 +62,27 @@ class CoffeHouse with ChangeNotifier {
     address = json['address'];
     List d = json['photos'];
     photos = d.map((e) => e.toString()).toList();
-
     notifyListeners();
   }
 
   void createCoffe(Coffe coffe) {
     RestController().sendPostRequest(
-        onComplete: ({required String data}) {
+        onComplete: ({required String data, required int statusCode}) {
           getCoffes();
         },
-        onError: ({required String data}) {},
-        controller: 'create_coffe',
+        onError: ({required int statusCode}) {},
+        controller: 'coffe',
         data: coffe.toJson());
   }
 
   void deleteCoffe(Coffe coffe) {
-    print(coffe.id);
     coffes.remove(coffe);
-    RestController().sendPostRequest(
-        onComplete: ({required String data}) {
+    RestController().sendDeleteRequest(
+        onComplete: ({required String data, required int statusCode}) {
           getCoffes();
         },
-        onError: ({required String data}) {},
-        controller: 'coffe_delete',
+        onError: ({required int statusCode}) {},
+        controller: 'coffe',
         data: '{"id":' + coffe.id.toString() + '}');
 
     notifyListeners();
@@ -93,6 +91,7 @@ class CoffeHouse with ChangeNotifier {
   String toJson() {
     Map<String, dynamic> data = {};
     String address = '';
+
     data['name'] = name;
     data['phone'] = phone;
     data['email'] = email;
@@ -104,10 +103,10 @@ class CoffeHouse with ChangeNotifier {
   }
 
   void updateMainInformation() {
-    RestController().sendPostRequest(
-        onComplete: ({required String data}) {},
-        onError: ({required String data}) {},
-        controller: 'update_coffe_house',
+    RestController().sendPutRequest(
+        onComplete: ({required String data, required int statusCode}) {},
+        onError: ({required int statusCode}) {},
+        controller: 'coffehouse',
         data: this.toJson());
   }
 }

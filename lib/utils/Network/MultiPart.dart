@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:coffe_admin/configuration/NetworkConfiguration.dart';
+import 'package:coffe_admin/utils/Configuration/NetworkConfiguration.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 
@@ -77,10 +77,10 @@ class RemoteFileManager {
 
   void deleteFile({url}) {
     RestController().sendPostRequest(
-        onComplete: ({required String data}) {
+        onComplete: ({required String data, required int statusCode}) {
           print('deletedFile' + '$data');
         },
-        onError: ({required String data}) {},
+        onError: ({required int statusCode}) {},
         controller: 'delete_file',
         data: '{"url":"' + url + '"}');
   }

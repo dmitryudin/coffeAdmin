@@ -91,9 +91,7 @@ class EditCarouselD extends State<EditCarouselDialog> {
                 child: Text('Отправить')),
             ElevatedButton(
                 onPressed: () {
-                  for (String img in newImages) {
-                    // RemoteFileManager().deleteFile(url: img);
-                  }
+                  isCansel = true;
                   Navigator.pop(context);
                 },
                 child: Text('Отменить'))
