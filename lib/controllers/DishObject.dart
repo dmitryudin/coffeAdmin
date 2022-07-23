@@ -18,18 +18,18 @@ class Property {
   }
 
   Property.fromJsonString({jsonString}) {
-    name = jsonString['name'];
-    price = jsonString['price'];
+    name = jsonString['name'].toString();
+    price = double.parse(jsonString['price'].toString());
   }
 }
 
 class Volume {
   Volume();
-  double volume = 0;
-  double price = 0;
+  double volume = 0.0;
+  double price = 0.0;
   Volume.fromJsonString({jsonString}) {
-    volume = jsonString['volume'];
-    price = jsonString['price'];
+    this.volume = double.parse(jsonString['volume'].toString());
+    this.price = double.parse(jsonString['price'].toString());
   }
   String toJson() {
     Map<String, dynamic> data = {};
@@ -72,8 +72,10 @@ class Coffe with ChangeNotifier {
     category = jsonString['category'];
 
     if (!jsonString['photo'].isEmpty) picture = jsonString['photo'].last;
+
     for (var el in jsonString['volumes'])
       this.priceOfVolume.add(Volume.fromJsonString(jsonString: el));
+
     for (var el in jsonString['suppliments'])
       this.properties.add(Property.fromJsonString(jsonString: el));
   }

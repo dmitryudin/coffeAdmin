@@ -29,12 +29,18 @@ class CoffeHouse with ChangeNotifier {
         onComplete: ({required String data, required int statusCode}) {
           List<dynamic> json = jsonDecode(data);
           this.coffes.clear();
+
           for (var coffe in json) {
+            print(coffe);
             this.coffes.add(Coffe.fromJson(jsonEncode(coffe)));
           }
+
           notifyListeners();
+          print(this.coffes);
         },
-        onError: ({required int statusCode}) {},
+        onError: ({required int statusCode}) {
+          print('erroe coffes');
+        },
         controller: 'coffes',
         data: "",
         accessToken: '');

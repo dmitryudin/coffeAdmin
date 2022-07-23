@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffe_admin/utils/Configuration/NetworkConfiguration.dart';
 import 'package:coffe_admin/utils/Network/MultiPart.dart';
 import 'package:coffe_admin/utils/Network/RestController.dart';
 
@@ -59,7 +60,7 @@ class AddPictureState extends State<AddPicture> {
       myImg = Column(
         children: [
           Text('Нажмите'),
-          Icon(Icons.add_a_photo, color: Colors.orange, size: width / 3),
+          Icon(Icons.add_a_photo, size: width / 3), //color: Colors.orange,
           Text('чтобы добавить фото', textAlign: TextAlign.center),
         ],
       );
@@ -98,7 +99,7 @@ class AddPictureState extends State<AddPicture> {
                 fillColor: Colors.blue[100],
                 child: Icon(
                   Icons.close_sharp,
-                  color: Colors.red,
+                  //color: Colors.red,
                   size: 15.0,
                 ),
                 padding: EdgeInsets.all(15.0),

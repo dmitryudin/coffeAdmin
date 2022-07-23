@@ -39,7 +39,7 @@ class MyWidget extends State<Carousel> {
           child: Icon(
             Icons.add_a_photo,
             size: height / 3,
-            color: Colors.red,
+            //color: Colors.red,
           ),
           onTap: () {
             NotificationController ntf = NotificationController();

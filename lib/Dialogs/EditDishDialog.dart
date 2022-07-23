@@ -4,6 +4,7 @@ import 'package:coffe_admin/MyWidgets/DropListWrapper.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:coffe_admin/controllers/DishObject.dart';
 import 'package:coffe_admin/utils/Network/RestController.dart';
+import 'package:coffe_admin/utils/Security/validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,7 @@ class EditDishDialog extends StatefulWidget {
 }
 
 class EditDishDialogState extends State<EditDishDialog> {
+  final _formKey = GlobalKey<FormState>();
   String image = '';
   bool isCancel = false;
   Coffe coffe = Coffe();
@@ -93,7 +95,9 @@ class EditDishDialogState extends State<EditDishDialog> {
       body: ListView(shrinkWrap: true, children: [
         Container(
             width: width * 0.8,
-            child: Column(mainAxisSize: MainAxisSize.max, children: [
+            child: Form(
+                key: _formKey,
+                child: Column(mainAxisSize: MainAxisSize.max, children: [
               SizedBox(
                 height: 25,
               ),
@@ -104,7 +108,9 @@ class EditDishDialogState extends State<EditDishDialog> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   child: TextFormField(
-                    validator: (value) {},
+                    validator: (value) {
+                      return Validator.isEmptyValid(value!);
+                    },
                     onChanged: (String value) {
                       coffe.name = value;
                     },
@@ -120,7 +126,7 @@ class EditDishDialogState extends State<EditDishDialog> {
                     coffe.category = value;
                     print('value' + '$value');
                   }),
-              Divider(color: Colors.black),
+              Divider(color: Colors.white),
               Text('Добавьте доступные объёмы'),
               Row(children: [
                 Expanded(
@@ -160,20 +166,28 @@ class EditDishDialogState extends State<EditDishDialog> {
               Divider(color: Colors.black),
               ElevatedButton(
                   onPressed: () {
+                    if (_formKey.currentState!.validate()){
+
+                
                     print('debug' + addPic.url);
                     Provider.of<CoffeHouse>(context, listen: false)
                         .createCoffe(coffe);
 
                     Navigator.pop(context);
+                    }
                   },
                   child: Text('Сохранить')),
-              ElevatedButton(
+              Padding(
+                    padding: const EdgeInsets.only(top: 5),
+              child: ElevatedButton(
                   onPressed: () {
                     isCancel = true;
                     Navigator.pop(context);
                   },
-                  child: Text('Отмена')),
-            ]))
+                  child: Text('Отмена'),
+              ),
+              ),
+            ])))
       ]),
     );
     // TODO: implement build

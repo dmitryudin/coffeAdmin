@@ -24,13 +24,15 @@ class MyDishView extends State<DishView> {
     return Stack(children: [
       Container(
         width: width / 2.05,
-        // height: height / 3,
-        padding: const EdgeInsets.only(top: 2.0),
+        height: height / 2.5,
+        padding: const EdgeInsets.only(top: 4.0),
         margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0), color: Colors.grey[600]),
+            borderRadius: BorderRadius.circular(20.0), color: Colors.grey[800]),
         child: Column(children: [
           Container(
+            width: width / 2.15,
+            height: height / 3.95,
             padding: EdgeInsets.all(2), // Border width
             decoration: BoxDecoration(
                 color: Colors.black54,
@@ -43,16 +45,20 @@ class MyDishView extends State<DishView> {
               ),
             ),
           ),
-          Text(
-            coffe.name,
+      Text(coffe.name,
             textDirection: TextDirection.ltr,
+            textAlign: TextAlign.center, 
             style: TextStyle(
-              fontSize: 14,
-              color: Colors.white,
+              fontSize: 16,
             ),
           ),
-          Align(
-            alignment: Alignment.centerLeft,
+        
+          ]
+        ),
+      ),
+          Positioned(
+          bottom: 55,
+          left: 15,
             child: Text(
               !coffe.priceOfVolume.isEmpty
                   ? coffe.priceOfVolume[0].volume.toString()
@@ -64,15 +70,17 @@ class MyDishView extends State<DishView> {
               ),
             ),
           ),
-          Container(
-            width: 135,
-            height: 35,
-            margin: const EdgeInsets.only(
-                bottom:
-                    1.0), //Не могу привязать контейнер c ценой к нижнему краю внешнего контейнера!!!!!!!!!! (Только если каждому элементу добавлять Padding)
+
+        Positioned(
+          bottom: 10,
+          left: 8,
+          child: Container(
+                        width: width / 2.2,
+            height: height / 15,
+          
             decoration: BoxDecoration(
                 color: Colors.black54,
-                borderRadius: BorderRadius.circular(10.0)),
+                borderRadius: BorderRadius.circular(14.0)),
             child: Center(
               child: Text(
                 !coffe.priceOfVolume.isEmpty
@@ -86,26 +94,29 @@ class MyDishView extends State<DishView> {
               ),
             ),
           ),
-        ]),
-      ),
+          ),
+        
+        
+    
       Positioned(
-          top: 10,
-          right: -15,
+          top: 4,
+          right: -16,
           child: RawMaterialButton(
             onPressed: () {
               Provider.of<CoffeHouse>(context, listen: false)
                   .deleteCoffe(coffe);
             },
-            elevation: 2.0,
-            fillColor: Colors.blue[100],
+            elevation: 1.0,
+            fillColor: Colors.grey[500],
             child: Icon(
               Icons.close_sharp,
-              color: Colors.red,
-              size: 15.0,
+              color: Colors.black,
+              size: 18.0,
             ),
-            padding: EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(7.0),
             shape: CircleBorder(),
           )),
-    ]);
+    ]
+    );
   }
 }

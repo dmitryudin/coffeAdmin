@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                 bottom: 0),
             Positioned(
               child: IconButton(
-                  icon: Icon(Icons.edit_outlined, color: Colors.red),
+                  icon: Icon(Icons.edit_outlined),
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -61,10 +61,10 @@ class HomePage extends StatelessWidget {
                 height: 20,
                 //child: Card(),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  //color: Colors.white,
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25)),
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35)),
                 ),
               ),
               bottom: 0,

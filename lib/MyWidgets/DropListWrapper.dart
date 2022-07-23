@@ -25,11 +25,11 @@ class DropListWrapperState extends State<DropListWrapper> {
       value: dropdownValue,
       icon: const Icon(Icons.arrow_downward),
       elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
+      //style: const TextStyle(color: Colors.deepPurple),
       underline: Container(
         //  width: width,
         height: 2,
-        color: Colors.deepPurpleAccent,
+        //color: Colors.deepPurpleAccent,
       ),
       onChanged: (String? newValue) {
         setState(() {

@@ -71,6 +71,7 @@ class BasicRestController {
     this.onError = onError;
     String url = NetworkConfiguration().address +
         NetworkConfiguration().controllersMap[controller].toString();
+    // print('send reqest to url $url');
     try {
       var response =
           await requestFunc(data: data, url: url, accessToken: accessToken);
