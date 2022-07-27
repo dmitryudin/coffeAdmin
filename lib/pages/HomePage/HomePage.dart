@@ -9,9 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../../controllers/OrdersObject.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    OrderController();
     // Это написал я
     double height = MediaQuery.of(context).size.height;
     var coffes = Provider.of<CoffeHouse>(context, listen: true).coffes;

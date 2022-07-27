@@ -1,12 +1,9 @@
-import 'package:coffe_admin/utils/Notifications/NotificationController.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import '../utils/Notifications/NotificationController.dart';
 import '../utils/Security/Auth.dart';
 
-class OrderController with ChangeNotifier {
+class OrderNotify {
   late IO.Socket socket;
 
   late var box;
@@ -21,7 +18,21 @@ class OrderController with ChangeNotifier {
             .build());
   }
 
-  OrderController() {}
+  OrderNotify() {
+    socketReInit();
+
+    socket.connect();
+    socket.onConnect((_) {
+      print('connect');
+    });
+    socket.on(
+        'message', (data) => {NotificationController().showNotification()});
+    socket.onDisconnect((data) => print('disconnect'));
+    socket.on('status', (data) => {});
+    socket.on('typing', (data) => {});
+    socket.on('delivered', (data) => {});
+    socket.on('friend', (data) => {});
+  }
 
   void connect(address) {
     socketReInit();
@@ -55,9 +66,4 @@ class OrderController with ChangeNotifier {
     socket.emit('typing', jsonString);
     socketReInit();
   }
-
-  void getActiveOrders() {}
-
-  /// chatModel = box.get('abonents');
-  notifyListeners();
 }

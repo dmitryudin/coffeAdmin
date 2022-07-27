@@ -1,6 +1,12 @@
+import 'dart:isolate';
+
+import 'package:coffe_admin/controllers/OrdersObject.dart';
 import 'package:coffe_admin/pages/HomePage/HomePage.dart';
+import 'package:coffe_admin/pages/UsersProfile/UserPage.dart';
 import 'package:coffe_admin/utils/Custom_Theme.dart';
+import 'package:coffe_admin/utils/Service/Foreground.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +18,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'pages/HomePage/HomePage.dart';
 import 'package:coffe_admin/utils/constance.dart';
+
+ReceivePort? _receivePort;
 void main() async {
   await Hive.initFlutter();
+  _receivePort = await FlutterForegroundTask.receivePort;
+  await initForegroundTask();
+  startForegroundTask();
   runApp(const MyApp());
 }
 
@@ -24,8 +35,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [ChangeNotifierProvider(create: (context) => CoffeHouse())],
+        providers: [
+          ChangeNotifierProvider(create: (context) => CoffeHouse()),
+          ChangeNotifierProvider(create: ((context) => OrderController()))
+        ],
         child: MaterialApp(
+          initialRoute: '/',
+          routes: {
+            //  '/': (context) =>  HomePage(),
+            '/resume-route': (context) => Orders(),
+          },
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
           theme: basicTheme(),
@@ -35,6 +54,14 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatefulWidget {
+  MainPage() {
+    /* _receivePort?.listen((message) {
+      if (message == 'onNotificationPressed') {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Orders()));
+      }
+    });*/
+  }
   @override
   MyWidget createState() {
     // TODO: implement createState
@@ -53,7 +80,7 @@ class MyWidget extends State {
   int index = 0;
   List<Widget> Screens = [
     HomePage(),
-    HomePage(),
+    UserPage(),
     Orders(),
   ];
 
@@ -63,7 +90,6 @@ class MyWidget extends State {
     return Scaffold(
       body: Center(child: Screens[index]),
       bottomNavigationBar: BottomNavigationBar(
-       
         currentIndex: index,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,

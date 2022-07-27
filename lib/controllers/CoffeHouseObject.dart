@@ -17,7 +17,6 @@ class CoffeHouse with ChangeNotifier {
   String token = '';
   List<String> photos = [];
   List<Coffe> coffes = [];
-  List<Order> orders = [];
 
   CoffeHouse() {
     getMainData();
