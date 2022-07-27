@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coffe_admin/MyWidgets/OrderPreview.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class UserPage extends StatefulWidget {
 }
 
 class MyWidget extends State<UserPage> {
+  void updateActiveOrders() {}
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -19,7 +21,6 @@ class MyWidget extends State<UserPage> {
         appBar: AppBar(
           title: Text('Активные заказы'),
         ),
-        body: Column(
-            children: [Container(height: height / 3, child: Text('sdfadf'))]));
+        body: ListView(children: [OrderPreview()]));
   }
 }
