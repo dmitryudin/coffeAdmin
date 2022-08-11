@@ -1,14 +1,21 @@
+import 'package:coffe_admin/controllers/OrdersObject.dart';
+import 'package:coffe_admin/pages/Orders/OrderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/OrderPage/OrderPage.dart';
+
 class OrderPreview extends StatefulWidget {
-  OrderPreview({Key? key}) : super(key: key);
+  late OrderObject orderObject;
+  OrderPreview(this.orderObject);
 
   @override
-  State<OrderPreview> createState() => _OrderPreviewState();
+  State<OrderPreview> createState() => _OrderPreviewState(orderObject);
 }
 
 class _OrderPreviewState extends State<OrderPreview> {
+  late OrderObject orderObject;
+  _OrderPreviewState(this.orderObject);
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -25,7 +32,7 @@ class _OrderPreviewState extends State<OrderPreview> {
           child: Column(children: [
             ListTile(
               tileColor: Colors.teal,
-              title: Text('Заказ № 566'),
+              title: Text('Заказ № ${orderObject.ids}'),
             ),
             Row(
               children: [
@@ -41,11 +48,18 @@ class _OrderPreviewState extends State<OrderPreview> {
               children: [
                 Text('  Стоимость: ',
                     style: TextStyle(fontSize: 25, color: Colors.blue)),
-                Text('565 руб.',
+                Text('${orderObject.totalCost}',
                     style: TextStyle(fontSize: 25, color: Colors.red))
               ],
             ),
-            ElevatedButton(onPressed: () {}, child: Text('Детали заказа'))
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderPagePreview(orderObject)));
+                },
+                child: Text('Детали заказа'))
           ])),
     );
   }

@@ -1,63 +1,35 @@
-import 'package:coffe_admin/utils/Notifications/NotificationController.dart';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:socket_io_client/socket_io_client.dart';
+import '../utils/Network/RestController.dart';
+import 'DishObject.dart';
 
-import '../utils/Security/Auth.dart';
+class OrderObject with ChangeNotifier {
+  int ids = 0;
+  int idPayment = -1;
+  bool onPlace = false;
+  String requiredDateTime = '';
+  bool isComplete = false;
+  double totalCost = 0.0;
+  List<Coffe> unpackedCoffe = [];
 
-class OrderController with ChangeNotifier {
-  late IO.Socket socket;
+  OrderObject();
 
-  late var box;
-  void socketReInit() {
-    socket = IO.io(
-        'http://thefircoffe.ddns.net:5050',
-        OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
-            .setExtraHeaders({
-          'foo': 'bar',
-          'Authorization': 'Bearer ${Auth().accessToken}',
-        }) // optional
-            .build());
+  OrderObject.fromJson(Map<String, dynamic> json) {
+    // Map<String, dynamic> jsonString = jsonDecode(json);
+    idPayment = json['id_payment'];
+    ids = json['id'];
+    requiredDateTime = json['required_datetime'];
+    //onPlace = json['on_place'];
+    totalCost = json['total_cost'];
+
+    unpackedCoffe = (json['positions'] as List)
+        .map((item) => Coffe.fromOrderJson(jsonEncode(item)))
+        .toList();
+    print('----------------------------------------------------');
+    print('айди платежа $idPayment');
+    print('требуемое время $requiredDateTime');
+    print('Итоговая стоимость $totalCost');
+    print('На месте $onPlace');
   }
-
-  OrderController() {}
-
-  void connect(address) {
-    socketReInit();
-    socket.connect();
-  }
-
-  void sendMessage(String senderLogin, String recieverLogin, message) {
-    String jsonString =
-        '{"sender_login":"$senderLogin", "reciever_login":"$recieverLogin", "message":"$message"}';
-    socketReInit();
-    socket.emit('message', jsonString);
-  }
-
-  void statusRequest(String recieverLogin) {
-    String jsonString = '{"reciever_login":"$recieverLogin"}';
-    socketReInit();
-    socket.emit('status', jsonString);
-  }
-
-  void sendTyping(String senderLogin, String recieverLogin) {
-    String jsonString =
-        '{"sender_login":"$senderLogin", "reciever_login":"$recieverLogin"';
-    socketReInit();
-    socket.emit('typing', jsonString);
-  }
-
-  void sendFriendlyRequest(String senderLogin, String recieverLogin) {
-    String jsonString =
-        '{"sender_login":"$senderLogin", "reciever_login":"$recieverLogin"';
-    socketReInit();
-    socket.emit('typing', jsonString);
-    socketReInit();
-  }
-
-  void getActiveOrders() {}
-
-  /// chatModel = box.get('abonents');
-  notifyListeners();
 }

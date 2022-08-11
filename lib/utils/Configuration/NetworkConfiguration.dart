@@ -6,8 +6,11 @@ class NetworkConfiguration {
 
   String address = 'http://thefircoffe.ddns.net:5050';
   Map controllersMap = {
-    'coffes': "/controller/coffes",
-    'coffe': "/controller/coffe",
+    'history_orders': '/controllers/history_orders',
+    'active_orders': '/controllers/active_orders',
+    'orders': "controllers/orders",
+    'coffes': "/controllers/coffes",
+    'coffe': "/controllers/coffe",
     'coffehouse': "/controllers/coffehouse",
     'upload_file': "/upload_file",
     'delete_file': "/delete_file",

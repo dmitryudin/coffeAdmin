@@ -80,8 +80,8 @@ class BasicRestController {
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var box = await Hive.openBox('myBox');
-        box.put(url, response.body);
+        //  var box = await Hive.openBox('myBox');
+        ///  box.put(url, response.body);
         return onComplete(data: response.body, statusCode: response.statusCode);
       } else {
         onError(statusCode: response.statusCode);
