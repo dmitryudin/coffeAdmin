@@ -86,6 +86,7 @@ class EditCarouselD extends State<EditCarouselDialog> {
                   coffeHouse.photos = images;
                   isCansel = false;
                   coffeHouse.updateMainInformation();
+
                   Navigator.pop(context);
                 },
                 child: Text('Отправить')),

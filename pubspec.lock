@@ -415,6 +415,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.3"
+  qr_code_scanner:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: fix_break_changes_platform
+      resolved-ref: "0feca6f15042c279ff575c559a3430df917b623d"
+      url: "https://github.com/xeinebiu/qr_code_scanner.git"
+    source: git
+    version: "0.7.0"
   rxdart:
     dependency: transitive
     description:

@@ -3,7 +3,6 @@ import 'package:coffe_admin/MyWidgets/AddPicture.dart';
 import 'package:coffe_admin/MyWidgets/DropListWrapper.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:coffe_admin/controllers/DishObject.dart';
-import 'package:coffe_admin/pages/HomePage/HomePage.dart';
 import 'package:coffe_admin/utils/Network/RestController.dart';
 import 'package:coffe_admin/utils/Security/validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,23 +24,23 @@ List<String> caterories = [
   'LIMONADES'
 ];
 
-class EditDishDialog extends StatefulWidget {
+class EditCakeDialog extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return EditDishDialogState();
+    return EditCakeDialogState();
   }
 }
 
-class EditDishDialogState extends State<EditDishDialog> {
+class EditCakeDialogState extends State<EditCakeDialog> {
   final _formKey = GlobalKey<FormState>();
   String image = '';
   bool isCancel = false;
   bool isImageUploaded = true;
   DishObject dishObject = DishObject();
 
-  EditDishDialogState() {
-    dishObject.category = 'coffe';
+  EditCakeDialogState() {
+    dishObject.category = 'cake';
     dishObject.subcategory = caterories[0];
   }
   @override
@@ -95,7 +94,7 @@ class EditDishDialogState extends State<EditDishDialog> {
     return Scaffold(
       //title: Text("Редактирование меню"),
       appBar: AppBar(
-        title: Text('Создание напитка'),
+        title: Text('Создание изделия'),
       ),
       body: ListView(shrinkWrap: true, children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -123,14 +122,14 @@ class EditDishDialogState extends State<EditDishDialog> {
                                 dishObject.name = value;
                               },
                               decoration: InputDecoration(
-                                labelText: 'Наименование напитка',
+                                labelText: 'Наименование изделия',
                               ),
                             )),
                         Divider(color: Colors.white),
-                        Text('Добавьте доступные объёмы'),
+                        Text('Добавьте доступную массу'),
                         Row(children: [
                           Expanded(
-                            child: Text('Объем'),
+                            child: Text('Масса, г'),
                             flex: 1,
                           ),
                           Text('Цена')
@@ -144,7 +143,7 @@ class EditDishDialogState extends State<EditDishDialog> {
                                     return (AddPriceOfVolumeDialog(this));
                                   });
                             },
-                            child: Text('Добавить объём')),
+                            child: Text('Добавить массу')),
                         Divider(color: Colors.black),
                         Row(children: [
                           Expanded(
@@ -181,15 +180,16 @@ class EditDishDialogState extends State<EditDishDialog> {
                             onPressed: () {
                               if (dishObject.fieldSelection.fields.isNotEmpty) {
                                 if (_formKey.currentState!.validate()) {
+                                  print('debug' + addPic.url);
                                   Provider.of<CoffeHouse>(context,
                                           listen: false)
                                       .createCoffe(dishObject);
-
                                   Provider.of<CoffeHouse>(context,
                                           listen: false)
                                       .getCoffes();
-
                                   Navigator.pop(context);
+
+                                  //Navigator.pop(context);
                                 }
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -206,7 +206,6 @@ class EditDishDialogState extends State<EditDishDialog> {
                             onPressed: () {
                               if (isImageUploaded) {
                                 isCancel = true;
-
                                 Navigator.pop(context);
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(

@@ -1,9 +1,8 @@
+import 'package:coffe_admin/Dialogs/EditCakeDialog.dart';
 import 'package:coffe_admin/Dialogs/EditDishDialog.dart';
 import 'package:flutter/material.dart';
 
-import '../Dialogs/EditCakeDialog.dart';
-
-class NewDishWidget extends StatelessWidget {
+class NewCakeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -14,7 +13,7 @@ class NewDishWidget extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditDishDialog(),
+                    builder: (context) => EditCakeDialog(),
                   ));
             },
             child: Container(
@@ -22,8 +21,8 @@ class NewDishWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     Text('Нажмите,'),
-                    Icon(Icons.coffee, size: width / 3),
-                    Text('чтобы добавить кофе'),
+                    Icon(Icons.cake, size: width / 3),
+                    Text('чтобы добавить кондитерку'),
                   ],
                 ))));
   }

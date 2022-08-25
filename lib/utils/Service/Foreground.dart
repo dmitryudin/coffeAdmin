@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 Future<void> initForegroundTask() async {
-  OrderController();
+  // OrderController();
   AwesomeNotifications().actionStream.listen((receivedAction) {
     var payload = receivedAction.payload;
     print('pushed notification');
@@ -58,7 +58,7 @@ class FirstTaskHandler extends TaskHandler {
   @override
   Future<void> onStart(DateTime timestamp, SendPort? sendPort) async {
     _sendPort = sendPort;
-    OrderController();
+    //OrderController();
 
     // You can use the getData function to get the stored data.
     final customData =

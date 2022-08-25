@@ -1,126 +1,135 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 
-class Property {
-  Property() {}
+class Option {
+  Option() {}
   double price = 0.0;
   String name = '';
-  bool initialValue = false;
-  bool used = false;
-  bool selected = false;
+  int count = 1;
+  bool isSelected = false;
 
   String toJson() {
     Map<String, dynamic> data = {};
     data['name'] = name;
     data['price'] = price;
+    data['is_selected'] = isSelected;
     String json = jsonEncode(data);
     return json;
   }
 
-  Property.fromJsonString({jsonString}) {
-    if (jsonString == null || jsonString == '') return;
-    print('json string $jsonString');
-    name = jsonString['name'];
-    price = jsonString['price'];
-    used = false;
+  Option.fromJson(String json) {
+    Map<String, dynamic> jsonMap = jsonDecode(json);
+
+    name = jsonMap['name'];
+    price = jsonMap['price'];
+    isSelected = jsonMap['is_selected'];
   }
 }
 
-class Volume {
-  Volume();
-  double volume = 0;
-  double price = 0;
-  Volume.fromJsonString({jsonString}) {
-    volume = jsonString['volume'];
-    price = double.parse(jsonString['price'].toString());
-  }
+class FieldSelection {
+  String name = '';
+  List<Option> fields = [];
+  Option selectedField = Option();
+  FieldSelection() {}
+
   String toJson() {
-    Map<String, dynamic> data = {};
-    data['volume'] = volume;
-    data['price'] = price;
-    String json = jsonEncode(data);
+    Map<String, dynamic> jsonMap = {};
+    jsonMap['name'] = name;
+    jsonMap['fields'] = fields.map((e) => jsonDecode(e.toJson())).toList();
+    jsonMap['selected_field'] = jsonDecode(selectedField.toJson());
+    String json = jsonEncode(jsonMap);
     return json;
+  }
+
+  FieldSelection.fromJson(String json) {
+    Map<String, dynamic> jsonMap = jsonDecode(json);
+
+    name = jsonMap['name'];
+
+    selectedField = Option.fromJson(jsonEncode(jsonMap['selected_field']));
+    List<dynamic> temp = jsonMap['fields'];
+    fields = temp.map((e) => (Option.fromJson(jsonEncode(e)))).toList();
   }
 }
 
-class Coffe with ChangeNotifier {
-  Coffe();
+class DishObject with ChangeNotifier {
+  DishObject();
   int id = -1;
   String category = '';
-  String picture = '';
+  String subcategory = '';
   String name = '';
-  double total = 0.0;
-  int count = 1;
   String description = '';
-  List<Volume> priceOfVolume = [];
-  List<Property> properties = [];
-  late Volume selectedVolume;
+  String picture = '';
+  double weight = 0.0;
+  double basePrice = 0.0;
+  double totalCost = 0.0;
+  int count = 1;
+
+  FieldSelection fieldSelection = FieldSelection();
+  List<Option> options = [];
 
   String toJson() {
     Map<String, dynamic> data = {};
-    data['name'] = name;
-    data['count'] = count;
-    //data['picture'] = picture;
-    data['description'] = description;
     data['category'] = category;
-    selectedVolume = Volume();
-    data['priceOfVolume'] = priceOfVolume;
-    data['selected_volume'] = (selectedVolume.volume).toString();
-    data['price'] = total;
+    data['subcategory'] = subcategory;
+    data['name'] = name;
+    data['description'] = description;
     data['picture'] = picture;
-    data['properties'] = properties.map((Property e) {
-      if (e.used) return jsonDecode(e.toJson());
-    }).toList();
-    String json = jsonEncode(data);
-
-    return json;
+    data['weight'] = weight;
+    data['base_price'] = basePrice;
+    data['total_cost'] = totalCost;
+    data['count'] = count;
+    data['options'] = options.map((e) => jsonDecode(e.toJson())).toList();
+    if (!fieldSelection.fields.isEmpty)
+      data['field_selection'] = jsonDecode(fieldSelection.toJson());
+    else
+      data['field_selection'] = [];
+    return jsonEncode(data);
   }
 
-  Coffe.fromJson(String data) {
-    Map<String, dynamic> jsonString = jsonDecode(data);
-    name = jsonString['name'];
-    id = jsonString['id'];
-    description = jsonString['description'];
-    category = jsonString['category'];
+  DishObject.fromJson(String data) {
+    Map<String, dynamic> jsonMap = jsonDecode(data);
 
-    if (!jsonString['photo'].isEmpty) picture = jsonString['photo'].last;
+    category = jsonMap['category'];
+    subcategory = jsonMap['subcategory'];
+    name = jsonMap['name'];
 
-    for (var el in jsonString['volumes'])
-      priceOfVolume.add(Volume.fromJsonString(jsonString: el));
-    print('parsed');
-    for (var el in jsonString['suppliments'])
-      properties.add(Property.fromJsonString(jsonString: el));
+    description = jsonMap['description'];
+    picture = jsonMap['picture'];
+    weight = jsonMap['weight'];
+    basePrice = jsonMap['base_price'];
+    try {
+      totalCost = jsonMap['total_cost'];
+      count = jsonMap['count'];
+    } catch (e) {
+      // Обработка возникшего исключения
+    }
+
+    fieldSelection =
+        FieldSelection.fromJson(jsonEncode(jsonMap['field_selection']));
+
+    List<dynamic> temp = jsonMap['options'];
+    options = temp.map((e) => (Option.fromJson(jsonEncode(e)))).toList();
   }
 
-  Coffe.fromOrderJson(String data) {
-    Map<String, dynamic> jsonString = jsonDecode(data);
-    name = jsonString['name'];
-    selectedVolume = Volume();
-    selectedVolume.volume = double.parse(jsonString['selected_volume']);
-
-    for (var el in jsonString['properties'])
-      properties.add(Property.fromJsonString(jsonString: el));
+  DishObject getDeepCopy() {
+    DishObject deepDishCopy = DishObject();
+    deepDishCopy.id = this.id;
+    deepDishCopy.category = this.category;
+    deepDishCopy.picture = this.picture;
+    deepDishCopy.name = this.name;
+    deepDishCopy.count = int.parse(this.count.toString());
+    deepDishCopy.description = this.description;
+    deepDishCopy.options = this.options;
+    deepDishCopy.fieldSelection = this.fieldSelection;
+    return deepDishCopy;
   }
 
-  Coffe getDeepCopy() {
-    Coffe deepCoffeCopy = Coffe();
-    deepCoffeCopy.id = this.id;
-    deepCoffeCopy.category = this.category;
-    deepCoffeCopy.picture = this.picture;
-    deepCoffeCopy.name = this.name;
-    deepCoffeCopy.count = int.parse(this.count.toString());
-    deepCoffeCopy.description = this.description;
-    deepCoffeCopy.priceOfVolume = this.priceOfVolume;
-    deepCoffeCopy.properties = this.properties;
-    deepCoffeCopy.selectedVolume = this.selectedVolume;
-    return deepCoffeCopy;
-  }
-
-  bool _compareCoffeLists(List list1, list2) {
+  bool _compareCoffeLists(List<Option> list1, list2) {
     if (list1.length == list2.length) {
       for (int i = 0; i < list1.length; i++) {
         if ((list1[i].name != list2[i].name) ||
-            (list1[i].used != list2[i].used)) {
+            (list1[i].isSelected != list2[i].isSelected)) {
           return false;
         }
       }
@@ -129,26 +138,28 @@ class Coffe with ChangeNotifier {
     return false;
   }
 
-  bool compareWith(Coffe template) {
+  bool compareWith(DishObject template) {
     return (template.id == this.id &&
         template.category == this.category &&
         template.picture == this.picture &&
         template.name == this.name &&
         template.count == int.parse(this.count.toString()) &&
         template.description == this.description &&
-        template.priceOfVolume.toString() == this.priceOfVolume.toString() &&
-        _compareCoffeLists(template.properties, this.properties) &&
-        template.selectedVolume.volume == this.selectedVolume.volume);
+        template.fieldSelection!.selectedField.toString() ==
+            this.fieldSelection!.selectedField.toString() &&
+        _compareCoffeLists(template.options, this.options));
   }
 
   double getTotal() {
     double counter = 0.0;
-    counter = counter + this.selectedVolume.price;
-    for (Property item in this.properties) {
-      if (item.used) counter = counter + item.price;
+    counter = counter +
+        this.fieldSelection!.selectedField!.price *
+            this.fieldSelection!.selectedField!.count;
+    for (Option item in this.options) {
+      if (item.isSelected) counter = counter + item.price;
     }
     counter = counter * this.count;
-    total = counter;
-    return counter;
+    totalCost = counter;
+    return totalCost + basePrice;
   }
 }

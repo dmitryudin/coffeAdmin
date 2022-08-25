@@ -1,29 +1,30 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/MyWidgets/OrderPreview.dart';
 import 'package:coffe_admin/controllers/OrdersController.dart';
+import 'package:coffe_admin/controllers/OrdersObject.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/OrdersObject.dart';
+class UserOrderPage extends StatefulWidget {
+  const UserOrderPage({Key? key}) : super(key: key);
 
-Key scrollKey = GlobalKey();
-
-class OrderPage extends StatefulWidget {
   @override
-  _OrderPageState createState() {
-    return _OrderPageState();
+  _UserOrderPageState createState() {
+    return _UserOrderPageState();
   }
 }
 
-class _OrderPageState extends State<OrderPage> {
+class _UserOrderPageState extends State<UserOrderPage> {
   List<Widget> orderPreview = [];
-  _OrderPageState() {}
+  _UserOrderPageState() {
+    //orderController.getActiveOrders();
+  }
 
   @override
   Widget build(BuildContext context) {
-    print('rebuild');
+    print('order page rebuild');
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     List<OrderObject> activeOrders =
@@ -31,17 +32,14 @@ class _OrderPageState extends State<OrderPage> {
 
     orderPreview = [];
     for (var order in activeOrders) {
-      orderPreview.add(OrderPreview(
-        order,
-        key: UniqueKey(),
-      ));
+      orderPreview.add(OrderPreview(order));
     }
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Активные заказы '),
+          title: Text('Активные заказы'),
         ),
-        body: ListView(key: scrollKey, children: [
+        body: ListView(children: [
           Column(children: orderPreview),
           ElevatedButton(
               onPressed: () {

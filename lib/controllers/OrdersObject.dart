@@ -5,31 +5,32 @@ import '../utils/Network/RestController.dart';
 import 'DishObject.dart';
 
 class OrderObject with ChangeNotifier {
-  int ids = 0;
   int idPayment = -1;
+  int ids = -1;
   bool onPlace = false;
   String requiredDateTime = '';
   bool isComplete = false;
+  bool isAccepted = false;
+
+  String userPhone = '';
   double totalCost = 0.0;
-  List<Coffe> unpackedCoffe = [];
+  List<DishObject> unpackedCoffe = [];
 
   OrderObject();
 
-  OrderObject.fromJson(Map<String, dynamic> json) {
-    // Map<String, dynamic> jsonString = jsonDecode(json);
-    idPayment = json['id_payment'];
-    ids = json['id'];
-    requiredDateTime = json['required_datetime'];
-    //onPlace = json['on_place'];
-    totalCost = json['total_cost'];
+  OrderObject.fromJson(String json) {
+    Map<String, dynamic> jsonMap = jsonDecode(json);
+    idPayment = jsonMap['id_payment'];
+    ids = jsonMap['id'];
 
-    unpackedCoffe = (json['positions'] as List)
-        .map((item) => Coffe.fromOrderJson(jsonEncode(item)))
+    requiredDateTime = jsonMap['required_datetime'];
+    userPhone = jsonMap['user_phone'];
+    onPlace = jsonMap['on_place'];
+    isAccepted = jsonMap['is_accepted'];
+    totalCost = jsonMap['total_cost'];
+
+    unpackedCoffe = (jsonMap['positions'] as List)
+        .map((item) => DishObject.fromJson(jsonEncode(item)))
         .toList();
-    print('----------------------------------------------------');
-    print('айди платежа $idPayment');
-    print('требуемое время $requiredDateTime');
-    print('Итоговая стоимость $totalCost');
-    print('На месте $onPlace');
   }
 }

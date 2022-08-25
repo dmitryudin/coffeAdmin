@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/Dialogs/EditCarouselDialog.dart';
 import 'package:coffe_admin/MyWidgets/Carousel.dart';
 import 'package:coffe_admin/MyWidgets/DishView.dart';
+import 'package:coffe_admin/MyWidgets/NewCakeWidget.dart';
 import 'package:coffe_admin/MyWidgets/NewDishWidget.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
 import 'package:coffe_admin/utils/Network/RestController.dart';
@@ -11,22 +12,39 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/OrdersController.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _HomePageState();
+  }
+}
+
+class _HomePageState extends State<HomePage> {
+  int index = 0;
+  final focusKey = ValueKey('focus');
   @override
   Widget build(BuildContext context) {
     OrderController();
     // Это написал я
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     var coffes = Provider.of<CoffeHouse>(context, listen: true).coffes;
     List<Widget> cof = [];
+    List<Widget> cake = [];
+
     for (var coffe in coffes) {
-      cof.add(DishView(coffe, key: UniqueKey()));
+      print(coffe.name);
+      coffe.category == 'coffe'
+          ? cof.add(DishView(coffe, key: UniqueKey()))
+          : cake.add(DishView(coffe, key: UniqueKey()));
     }
 
     cof.add(NewDishWidget());
+    cake.add(NewCakeWidget());
     int i = -2;
     // TODO: implement build
-    return CustomScrollView(slivers: <Widget>[
+    return CustomScrollView(center: focusKey, slivers: <Widget>[
       SliverAppBar(
           pinned: false,
           snap: false,
@@ -76,6 +94,7 @@ class HomePage extends StatelessWidget {
             ),
           ])),
       SliverList(
+        key: focusKey,
         delegate: SliverChildListDelegate(
           [
             Card(
@@ -93,22 +112,74 @@ class HomePage extends StatelessWidget {
                 Text(Provider.of<CoffeHouse>(context, listen: true).email),
               ]),
             ])),
-            ListView.builder(
-                itemCount: (cof.length / 2).ceil().toInt(),
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  i = i + 2;
-                  if (cof.length - i == 1)
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [cof.last],
-                    );
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [cof[i], cof[i + 1]],
-                  );
-                })
+            Row(
+              children: [
+                SizedBox(
+                    width: width / 2,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: index == 0
+                                ? MaterialStateProperty.all(Colors.red)
+                                : MaterialStateProperty.all(
+                                    Color.fromARGB(255, 37, 37, 19))),
+                        onPressed: () {
+                          setState(() {
+                            index = 0;
+                            print(index);
+                          });
+                        },
+                        child: Text('Напитки'))),
+                SizedBox(
+                    width: width / 2,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: index == 1
+                              ? MaterialStateProperty.all(Colors.red)
+                              : MaterialStateProperty.all(
+                                  Color.fromARGB(255, 37, 37, 19)),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            print(index);
+                            index = 1;
+                          });
+                        },
+                        child: Text('Кондитерка'))),
+              ],
+            ),
+            index == 0
+                ? ListView.builder(
+                    itemCount: (cof.length / 2).ceil().toInt(),
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      i = i + 2;
+                      if (cof.length - i == 1)
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [cof.last],
+                        );
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [cof[i], cof[i + 1]],
+                      );
+                    })
+                : ListView.builder(
+                    itemCount: (cake.length / 2).ceil().toInt(),
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      i = i + 2;
+                      if (cake.length - i == 1)
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [cake.last],
+                        );
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [cake[i], cake[i + 1]],
+                      );
+                    })
           ],
         ),
       )

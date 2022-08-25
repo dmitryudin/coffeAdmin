@@ -16,7 +16,7 @@ class CoffeHouse with ChangeNotifier {
   double rating = 5.5;
   String token = '';
   List<String> photos = [];
-  List<Coffe> coffes = [];
+  List<DishObject> coffes = [];
 
   CoffeHouse() {
     getMainData();
@@ -28,14 +28,15 @@ class CoffeHouse with ChangeNotifier {
         onComplete: ({required String data, required int statusCode}) {
           List<dynamic> json = jsonDecode(data);
           this.coffes.clear();
+          print('coffe cleaned');
 
           for (var coffe in json) {
-            print(coffe);
-            this.coffes.add(Coffe.fromJson(jsonEncode(coffe)));
+            this.coffes.add(DishObject.fromJson((jsonEncode(coffe))));
           }
+          print('coffe parsed');
 
           notifyListeners();
-          print(this.coffes);
+          print('coffe notyfied');
         },
         onError: ({required int statusCode}) {
           print('erroe coffes');
@@ -46,10 +47,12 @@ class CoffeHouse with ChangeNotifier {
   }
 
   getMainData() {
+    print('get main data');
     RestController().sendGetRequest(
         onComplete: ({required String data, required int statusCode}) {
           onMainDataAccepted(data);
           getCoffes();
+          print('this is');
         },
         onError: ({required int statusCode}) {},
         controller: 'coffehouse',
@@ -70,7 +73,7 @@ class CoffeHouse with ChangeNotifier {
     notifyListeners();
   }
 
-  void createCoffe(Coffe coffe) {
+  void createCoffe(DishObject coffe) {
     RestController().sendPostRequest(
         onComplete: ({required String data, required int statusCode}) {
           getCoffes();
@@ -80,7 +83,7 @@ class CoffeHouse with ChangeNotifier {
         data: coffe.toJson());
   }
 
-  void deleteCoffe(Coffe coffe) {
+  void deleteCoffe(DishObject coffe) {
     coffes.remove(coffe);
     RestController().sendDeleteRequest(
         onComplete: ({required String data, required int statusCode}) {

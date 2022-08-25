@@ -2,6 +2,7 @@ import 'dart:isolate';
 
 import 'package:coffe_admin/controllers/OrdersController.dart';
 import 'package:coffe_admin/pages/HomePage/HomePage.dart';
+import 'package:coffe_admin/pages/HomePage/TestPage.dart';
 import 'package:coffe_admin/pages/OrderPage/OrderPage.dart';
 import 'package:coffe_admin/utils/Custom_Theme.dart';
 import 'package:coffe_admin/utils/Service/Foreground.dart';
@@ -19,10 +20,10 @@ import 'package:provider/provider.dart';
 import 'pages/HomePage/HomePage.dart';
 import 'package:coffe_admin/utils/constance.dart';
 
-ReceivePort? _receivePort;
+ReceivePort? receivePort;
 void main() async {
   await Hive.initFlutter();
-  _receivePort = await FlutterForegroundTask.receivePort;
+  receivePort = await FlutterForegroundTask.receivePort;
   await initForegroundTask();
   startForegroundTask();
   runApp(const MyApp());
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             //  '/': (context) =>  HomePage(),
-            '/resume-route': (context) => Orders(),
+            '/resume-route': (context) => QRViewExample(),
           },
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
@@ -73,16 +74,13 @@ class MyWidget extends State {
   void _onItemTapped(ind) {
     setState(() {
       Provider.of<CoffeHouse>(context, listen: false).getMainData();
+
       index = ind;
     });
   }
 
   int index = 0;
-  List<Widget> Screens = [
-    HomePage(),
-    OrderPage(),
-    Orders(),
-  ];
+  List<Widget> Screens = [HomePage(), OrderPage(), QRViewExample()];
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +102,7 @@ class MyWidget extends State {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'История заказов',
+            label: 'QR сканер',
           ),
         ],
       ),

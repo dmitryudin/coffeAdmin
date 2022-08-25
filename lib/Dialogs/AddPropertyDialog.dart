@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AddPropertyDialog extends StatefulWidget {
-  EditDishDialogState baseClass;
+  var baseClass;
 
   AddPropertyDialog(this.baseClass);
 
@@ -17,8 +17,8 @@ class AddPropertyDialog extends StatefulWidget {
 }
 
 class AddPropertyDialogState extends State<AddPropertyDialog> {
-  EditDishDialogState baseClass;
-  Property property = Property();
+  var baseClass;
+  Option property = Option();
   AddPropertyDialogState(this.baseClass);
   @override
   Widget build(BuildContext context) {
@@ -69,9 +69,9 @@ class AddPropertyDialogState extends State<AddPropertyDialog> {
                   )),
               ElevatedButton(
                   onPressed: () {
-                    baseClass.coffe.properties.add(property);
-                    baseClass.coffe.properties =
-                        baseClass.coffe.properties.toSet().toList();
+                    baseClass.dishObject.options.add(property);
+                    baseClass.dishObject.options =
+                        baseClass.dishObject.options.toSet().toList();
                     baseClass.setState(() {});
                     Navigator.pop(context);
                     ;
@@ -84,7 +84,7 @@ class AddPropertyDialogState extends State<AddPropertyDialog> {
 }
 
 class AddPriceOfVolumeDialog extends StatefulWidget {
-  EditDishDialogState baseClass;
+  var baseClass;
 
   AddPriceOfVolumeDialog(this.baseClass);
   @override
@@ -95,8 +95,8 @@ class AddPriceOfVolumeDialog extends StatefulWidget {
 }
 
 class AddPriceOfVolumeDialogState extends State<AddPriceOfVolumeDialog> {
-  EditDishDialogState baseClass;
-  Volume tempVolume = Volume();
+  var baseClass;
+  Option option = Option();
   AddPriceOfVolumeDialogState(this.baseClass);
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class AddPriceOfVolumeDialogState extends State<AddPriceOfVolumeDialog> {
 
     // TODO: implement build
     return AlertDialog(
-        title: Text('Добавить объём'),
+        title: Text('Добавить объём/массу'),
         content: Container(
           width: width * 0.96,
           child: Column(
@@ -127,10 +127,10 @@ class AddPriceOfVolumeDialogState extends State<AddPriceOfVolumeDialog> {
                     ],
                     validator: (value) {},
                     onChanged: (String value) {
-                      tempVolume.volume = double.parse(value);
+                      option.name = (value);
                     },
                     decoration: InputDecoration(
-                      labelText: 'Объем, мл',
+                      labelText: 'Объем, мл (Масса, г)',
                     ),
                   )),
               Container(
@@ -151,7 +151,7 @@ class AddPriceOfVolumeDialogState extends State<AddPriceOfVolumeDialog> {
                     ],
                     validator: (value) {},
                     onChanged: (String value) {
-                      tempVolume.price = double.parse(value);
+                      option.price = double.parse(value);
                     },
                     decoration: InputDecoration(
                       labelText: 'Цена, руб',
@@ -159,9 +159,8 @@ class AddPriceOfVolumeDialogState extends State<AddPriceOfVolumeDialog> {
                   )),
               ElevatedButton(
                   onPressed: () {
-                    baseClass.coffe.priceOfVolume.add(tempVolume);
-                    baseClass.coffe.priceOfVolume =
-                        baseClass.coffe.priceOfVolume.toSet().toList();
+                    baseClass.dishObject.fieldSelection!.fields.add(option);
+
                     baseClass.setState(() {});
                     Navigator.pop(context);
                   },

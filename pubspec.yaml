@@ -46,6 +46,10 @@ dependencies:
   flutter_foreground_service:
   flutter_foreground_task: ^3.7.3
   flutter_datetime_picker: ^1.5.1
+  qr_code_scanner:
+    git:
+      url: https://github.com/xeinebiu/qr_code_scanner.git
+      ref: fix_break_changes_platform
 
 
 dev_dependencies:

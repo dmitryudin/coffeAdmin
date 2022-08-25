@@ -31,7 +31,7 @@ class OrderPageState extends State<OrderPagePreview> {
     OrderObject newOrderObject = orderObject;
 
     List<Widget> coffeLines = [];
-    for (Coffe line in newOrderObject.unpackedCoffe) {
+    for (DishObject line in newOrderObject.unpackedCoffe) {
       coffeLines.add(Container(
           width: width * 0.85,
           child: Column(children: [
@@ -45,7 +45,7 @@ class OrderPageState extends State<OrderPagePreview> {
               ),
               Expanded(
                 child: Text(
-                  line.selectedVolume.volume.toString() + ' мл',
+                  line.fieldSelection!.selectedField!.name.toString() + ' мл',
                   textAlign: TextAlign.right,
                   style: TextStyle(color: Colors.blue, fontSize: 20),
                 ),
@@ -62,7 +62,7 @@ class OrderPageState extends State<OrderPagePreview> {
                         fontSize: 15)),
                 Text(
                   '    ' +
-                      line.properties
+                      line.options
                           .map((e) => e.name)
                           .toList()
                           .toString()
@@ -95,7 +95,7 @@ class OrderPageState extends State<OrderPagePreview> {
               ),
               Expanded(
                 child: Text(
-                  line.total.toString(),
+                  line.totalCost.toString(),
                   textAlign: TextAlign.right,
                   style: TextStyle(color: Colors.blue, fontSize: 15),
                 ),
@@ -109,7 +109,7 @@ class OrderPageState extends State<OrderPagePreview> {
           ])));
     }
     return Scaffold(
-      appBar: AppBar(title: Text('Оформление заказа')),
+      appBar: AppBar(title: Text('Просмотр заказа')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,54 +164,7 @@ class OrderPageState extends State<OrderPagePreview> {
                                       color: Color.fromARGB(255, 243, 33, 33),
                                       fontSize: 20),
                                 ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      DatePicker.showDateTimePicker(
-                                        context,
-                                        locale: LocaleType.ru,
-                                        onConfirm: (time) {
-                                          print('change $time');
-                                          mytime =
-                                              time.toString().substring(0, 16);
-                                          orderObject.requiredDateTime = mytime;
-                                          setState(() {});
-                                        },
-                                      );
-                                    },
-                                    child: Text('Выбрать время'))
                               ])),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Radio(
-                                    fillColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.green),
-                                    focusColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.green),
-                                    value: false,
-                                    groupValue: valueRadio,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        valueRadio = value!;
-                                        orderObject.onPlace = valueRadio;
-                                      });
-                                    }),
-                                Text('С собой'),
-                                Radio(
-                                    fillColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.green),
-                                    focusColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.green),
-                                    value: true,
-                                    groupValue: valueRadio,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        valueRadio = value!;
-                                        orderObject.onPlace = valueRadio;
-                                      });
-                                    }),
-                                Text('На месте'),
-                              ]),
                         ],
                       )))),
           ElevatedButton(

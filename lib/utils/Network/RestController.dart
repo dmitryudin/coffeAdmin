@@ -37,20 +37,20 @@ class RestController extends BasicRestController {
         requestFunc: super.deleteRequest);
   }
 
-  void sendGetRequest(
+  Future<void> sendGetRequest(
       {required void Function({required String data, required int statusCode})
           onComplete,
       required void Function({required int statusCode}) onError,
       required String controller,
       required String data,
-      String? accessToken}) {
+      String? accessToken}) async {
     super.sendRequest(
         onComplete: onComplete,
         onError: onError,
         controller: controller,
         data: data,
         accessToken: accessToken,
-        requestFunc: super.getRequest);
+        requestFunc: await super.getRequest);
   }
 
   void sendPutRequest(
