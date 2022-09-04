@@ -20,12 +20,13 @@ import 'package:provider/provider.dart';
 import 'pages/HomePage/HomePage.dart';
 import 'package:coffe_admin/utils/constance.dart';
 
-ReceivePort? receivePort;
+ReceivePort? _receivePort;
 void main() async {
   await Hive.initFlutter();
-  receivePort = await FlutterForegroundTask.receivePort;
+
   await initForegroundTask();
   startForegroundTask();
+
   runApp(const MyApp());
 }
 

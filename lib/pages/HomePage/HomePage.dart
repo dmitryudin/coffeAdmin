@@ -1,15 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffe_admin/Dialogs/EditCarouselDialog.dart';
 import 'package:coffe_admin/MyWidgets/Carousel.dart';
+import 'package:coffe_admin/MyWidgets/CoffeGroupWidget.dart';
 import 'package:coffe_admin/MyWidgets/DishView.dart';
 import 'package:coffe_admin/MyWidgets/NewCakeWidget.dart';
 import 'package:coffe_admin/MyWidgets/NewDishWidget.dart';
 import 'package:coffe_admin/controllers/CoffeHouseObject.dart';
+import 'package:coffe_admin/controllers/DishObject.dart';
+import 'package:coffe_admin/utils/DataStorage/KeyStorage.dart';
 import 'package:coffe_admin/utils/Network/RestController.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-
+import "package:collection/collection.dart";
 import '../../controllers/OrdersController.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,27 +25,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int index = 0;
+  int index = KeyStorage().keyStore['index'];
   final focusKey = ValueKey('focus');
   @override
   Widget build(BuildContext context) {
-    OrderController();
     // Это написал я
+    KeyStorage().keyStore['index'] = index;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     var coffes = Provider.of<CoffeHouse>(context, listen: true).coffes;
-    List<Widget> cof = [];
-    List<Widget> cake = [];
+    List<Widget> cofWidget = [];
+    List<Widget> cakeWidget = [];
+    List<DishObject> coffesObj = [];
+    List<DishObject> cakeObj = [];
 
     for (var coffe in coffes) {
-      print(coffe.name);
-      coffe.category == 'coffe'
-          ? cof.add(DishView(coffe, key: UniqueKey()))
-          : cake.add(DishView(coffe, key: UniqueKey()));
+      coffe.category == 'coffe' ? coffesObj.add(coffe) : cakeObj.add(coffe);
+    }
+    Map k = groupBy(coffesObj, (DishObject obj) => obj.subcategory);
+    for (String dish in k.keys) {
+      cofWidget
+          .add(CoffeGroupWidget(dishes: k[dish], name: dish, key: UniqueKey()));
+    }
+    Map t = groupBy(cakeObj, (DishObject obj) => obj.subcategory);
+    for (String dish in t.keys) {
+      cakeWidget.add(CoffeGroupWidget(
+        dishes: t[dish],
+        name: dish,
+        key: UniqueKey(),
+      ));
     }
 
-    cof.add(NewDishWidget());
-    cake.add(NewCakeWidget());
+    cofWidget.add(NewDishWidget());
+    cakeWidget.add(NewCakeWidget());
     int i = -2;
     // TODO: implement build
     return CustomScrollView(center: focusKey, slivers: <Widget>[
@@ -148,38 +164,8 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             index == 0
-                ? ListView.builder(
-                    itemCount: (cof.length / 2).ceil().toInt(),
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      i = i + 2;
-                      if (cof.length - i == 1)
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [cof.last],
-                        );
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [cof[i], cof[i + 1]],
-                      );
-                    })
-                : ListView.builder(
-                    itemCount: (cake.length / 2).ceil().toInt(),
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      i = i + 2;
-                      if (cake.length - i == 1)
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [cake.last],
-                        );
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [cake[i], cake[i + 1]],
-                      );
-                    })
+                ? Column(children: cofWidget)
+                : Column(children: cakeWidget)
           ],
         ),
       )

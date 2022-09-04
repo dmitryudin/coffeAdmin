@@ -1,3 +1,4 @@
+import 'package:coffe_admin/Dialogs/BonusesDialog.dart';
 import 'package:coffe_admin/controllers/OrdersController.dart';
 import 'package:coffe_admin/controllers/OrdersObject.dart';
 import 'package:flutter/cupertino.dart';
@@ -172,11 +173,15 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
                                       child: Text('Принять'))
                                   : Row(key: UniqueKey()),
                               ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (context) => BonusesDialog(
+                                              userId: _orderObject!.userId,
+                                              cost: _orderObject!.totalCost,
+                                            ));
                                     orderController
                                         .deleteOrder(_orderObject!.ids);
-                                    orderController.getActiveOrders();
-                                    orderController.notifyListeners();
 
                                     Navigator.pop(context);
                                   },

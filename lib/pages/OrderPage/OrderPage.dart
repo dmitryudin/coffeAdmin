@@ -45,7 +45,8 @@ class _OrderPageState extends State<OrderPage> {
           Column(children: orderPreview),
           ElevatedButton(
               onPressed: () {
-                // orderController.getActiveOrders();
+                Provider.of<OrderController>(context, listen: false)
+                    .getActiveOrders();
               },
               child: Text('Обновить'))
         ]));

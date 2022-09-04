@@ -9,6 +9,7 @@ class NewDishWidget extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     // TODO: implement build
     return Card(
+        margin: EdgeInsets.only(top: 30),
         child: GestureDetector(
             onTap: () {
               Navigator.push(
@@ -18,7 +19,7 @@ class NewDishWidget extends StatelessWidget {
                   ));
             },
             child: Container(
-                width: width / 2.1,
+                width: width * 0.8,
                 child: Column(
                   children: [
                     Text('Нажмите,'),

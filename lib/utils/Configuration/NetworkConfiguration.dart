@@ -6,6 +6,7 @@ class NetworkConfiguration {
 
   String address = 'http://185.119.58.234:5050';
   Map controllersMap = {
+    'client_bonuses': '/controllers/client_bonuses',
     'accept_order': '/controllers/accept_order',
     'client': '/controllers/client',
     'order': "/controllers/order",

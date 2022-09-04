@@ -89,7 +89,10 @@ class DishObject with ChangeNotifier {
 
   DishObject.fromJson(String data) {
     Map<String, dynamic> jsonMap = jsonDecode(data);
-
+    print(jsonMap);
+    try {
+      id = jsonMap['id'];
+    } catch (e) {}
     category = jsonMap['category'];
     subcategory = jsonMap['subcategory'];
     name = jsonMap['name'];
@@ -98,6 +101,7 @@ class DishObject with ChangeNotifier {
     picture = jsonMap['picture'];
     weight = jsonMap['weight'];
     basePrice = jsonMap['base_price'];
+
     try {
       totalCost = jsonMap['total_cost'];
       count = jsonMap['count'];

@@ -12,16 +12,11 @@ import 'package:provider/provider.dart';
 import '../utils/Network/MultiPart.dart';
 
 // TODO можно в будущем сделать категории подгружаемыми с интернета
-List<String> caterories = [
-  'Чёрный кофе',
-  "Классика",
-  "Не кофе",
-  "Чай",
-  "Смузи",
-  "Авторские напитки",
-  "COLD",
-  "Милкшейки",
-  'LIMONADES'
+List<String> categories = [
+  'Пирожные',
+  "Авторские изделия",
+  "Капкейки",
+  "Другое",
 ];
 
 class EditCakeDialog extends StatefulWidget {
@@ -41,7 +36,7 @@ class EditCakeDialogState extends State<EditCakeDialog> {
 
   EditCakeDialogState() {
     dishObject.category = 'cake';
-    dishObject.subcategory = caterories[0];
+    dishObject.subcategory = categories[0];
   }
   @override
   Widget build(BuildContext context) {
@@ -125,6 +120,12 @@ class EditCakeDialogState extends State<EditCakeDialog> {
                                 labelText: 'Наименование изделия',
                               ),
                             )),
+                        Divider(color: Colors.white),
+                        DropListWrapper(
+                            items: categories,
+                            onSelect: (String newValue) {
+                              dishObject.subcategory = newValue;
+                            }),
                         Divider(color: Colors.white),
                         Text('Добавьте доступную массу'),
                         Row(children: [

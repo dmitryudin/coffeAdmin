@@ -8,27 +8,29 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserOrderPage extends StatefulWidget {
-  const UserOrderPage({Key? key}) : super(key: key);
+  int userId = -1;
+  UserOrderPage({Key? key}) : super(key: key);
 
   @override
   _UserOrderPageState createState() {
-    return _UserOrderPageState();
+    return _UserOrderPageState(userId);
   }
 }
 
 class _UserOrderPageState extends State<UserOrderPage> {
   List<Widget> orderPreview = [];
-  _UserOrderPageState() {
-    //orderController.getActiveOrders();
+  int userId = -1;
+  _UserOrderPageState(this.userId) {
+    //OrderController().getUsersActiveOrders(userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    print('order page rebuild');
+    print('order page user rebuild');
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     List<OrderObject> activeOrders =
-        Provider.of<OrderController>(context, listen: true).activeOrders;
+        Provider.of<OrderController>(context, listen: true).usersActiveOrders;
 
     orderPreview = [];
     for (var order in activeOrders) {

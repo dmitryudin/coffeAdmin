@@ -2,12 +2,19 @@ import 'package:coffe_admin/Dialogs/EditCakeDialog.dart';
 import 'package:coffe_admin/Dialogs/EditDishDialog.dart';
 import 'package:flutter/material.dart';
 
+List<String> categories = [
+  'Пирожные',
+  "Капкейки",
+  "Другое",
+];
+
 class NewCakeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     // TODO: implement build
     return Card(
+        margin: EdgeInsets.only(top: 30),
         child: GestureDetector(
             onTap: () {
               Navigator.push(
@@ -17,7 +24,7 @@ class NewCakeWidget extends StatelessWidget {
                   ));
             },
             child: Container(
-                width: width / 2.1,
+                width: width * 0.8,
                 child: Column(
                   children: [
                     Text('Нажмите,'),

@@ -127,6 +127,12 @@ class EditDishDialogState extends State<EditDishDialog> {
                               ),
                             )),
                         Divider(color: Colors.white),
+                        DropListWrapper(
+                            items: caterories,
+                            onSelect: (String newValue) {
+                              dishObject.subcategory = newValue;
+                            }),
+                        Divider(color: Colors.white),
                         Text('Добавьте доступные объёмы'),
                         Row(children: [
                           Expanded(

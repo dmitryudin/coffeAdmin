@@ -1,6 +1,7 @@
 import 'dart:isolate';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:coffe_admin/controllers/OrderNotification.dart';
 import 'package:coffe_admin/controllers/OrdersController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
@@ -58,12 +59,12 @@ class FirstTaskHandler extends TaskHandler {
   @override
   Future<void> onStart(DateTime timestamp, SendPort? sendPort) async {
     _sendPort = sendPort;
-    //OrderController();
 
     // You can use the getData function to get the stored data.
     final customData =
         await FlutterForegroundTask.getData<String>(key: 'customData');
     print('customData: $customData');
+    OrderNotification(_sendPort);
   }
 
   @override
@@ -72,7 +73,7 @@ class FirstTaskHandler extends TaskHandler {
         notificationTitle: '#Thefir админ',
         notificationText: 'Приложение работает в фоновом режиме');
     // Send data to the main isolate.
-    sendPort?.send(timestamp);
+    //sendPort?.send(timestamp);
   }
 
   @override
@@ -123,29 +124,34 @@ Future<bool> startForegroundTask() async {
   // You can save data using the saveData function.
   await FlutterForegroundTask.saveData(key: 'customData', value: 'hello');
 
-  ReceivePort? receivePort;
+  bool reqResult;
   if (await FlutterForegroundTask.isRunningService) {
-    receivePort =
-        (await FlutterForegroundTask.restartService()) as ReceivePort?;
+    reqResult = await FlutterForegroundTask.restartService();
   } else {
-    receivePort = (await FlutterForegroundTask.startService(
+    reqResult = await FlutterForegroundTask.startService(
       notificationTitle: 'Foreground Service is running',
       notificationText: 'Tap to return to the app',
       callback: startCallback,
-    )) as ReceivePort?;
-    print('FOREGROUND_SERVISE started!!');
+    );
+  }
+
+  ReceivePort? receivePort;
+  if (reqResult) {
+    receivePort = await FlutterForegroundTask.receivePort;
   }
 
   return registerReceivePort(receivePort);
 }
 
-ReceivePort? _receivePort;
+ReceivePort? publicReceivePort;
 bool registerReceivePort(ReceivePort? receivePort) {
   _closeReceivePort();
 
   if (receivePort != null) {
-    _receivePort = receivePort;
-    _receivePort?.listen((message) {
+    publicReceivePort = receivePort;
+    publicReceivePort?.listen((message) {
+      OrderController().getActiveOrders();
+      print(message);
       if (message is DateTime) {
         print('timestamp: ${message.toString()}');
       } else if (message is String) {
@@ -160,6 +166,6 @@ bool registerReceivePort(ReceivePort? receivePort) {
 }
 
 void _closeReceivePort() {
-  _receivePort?.close();
-  _receivePort = null;
+  publicReceivePort?.close();
+  publicReceivePort = null;
 }

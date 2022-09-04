@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:isolate';
 
 import 'package:coffe_admin/controllers/OrdersObject.dart';
 import 'package:coffe_admin/utils/Notifications/NotificationController.dart';
@@ -13,35 +14,17 @@ import '../utils/Security/Auth.dart';
 
 class OrderController with ChangeNotifier {
   late IO.Socket socket;
+  int uid = -1;
   List<OrderObject> activeOrders = [];
   List<OrderObject> usersActiveOrders = [];
-  void socketReInit() {
-    socket = IO.io(
-        'http://185.119.58.234:5050',
-        OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
-            .setExtraHeaders({
-          'foo': 'bar',
-          'Authorization': 'Bearer ${Auth().accessToken}',
-        }) // optional
-            .build());
-  }
 
-  OrderController() {
-    socketReInit();
-    socket.connect();
-    getActiveOrders();
-    socket.onConnect((_) {
-      print('connect');
-    });
-    socket.on('message', (data) {
-      getActiveOrders();
-      NotificationController().showNotification();
+  static final OrderController _orderController = OrderController._instance();
 
-      notifyListeners();
-    });
-    socket.onDisconnect((data) => print('disconnect'));
-    notifyListeners();
+  factory OrderController() {
+    _orderController.getActiveOrders();
+    return _orderController;
   }
+  OrderController._instance();
 
   void setState() {
     notifyListeners();
@@ -75,6 +58,7 @@ class OrderController with ChangeNotifier {
   }
 
   void getUsersActiveOrders(int user_id) {
+    uid = user_id;
     RestController().sendGetRequest(
         onComplete: ({required String data, required int statusCode}) {
           // print(data);
@@ -91,17 +75,19 @@ class OrderController with ChangeNotifier {
           notifyListeners();
         },
         controller: 'active_orders_by_user_id',
-        data: '/?user_id=$user_id');
+        data: '?user_id=$user_id');
     notifyListeners();
   }
 
   void deleteOrder(int id) {
     RestController().sendDeleteRequest(
         onComplete: ({required String data, required int statusCode}) {
-          notifyListeners();
+          getActiveOrders();
+          getUsersActiveOrders(uid);
         },
         onError: ({required int statusCode}) {
-          notifyListeners();
+          getActiveOrders();
+          getUsersActiveOrders(uid);
         },
         controller: 'order',
         data: '{"order_id":$id}');

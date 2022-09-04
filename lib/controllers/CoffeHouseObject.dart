@@ -84,7 +84,6 @@ class CoffeHouse with ChangeNotifier {
   }
 
   void deleteCoffe(DishObject coffe) {
-    coffes.remove(coffe);
     RestController().sendDeleteRequest(
         onComplete: ({required String data, required int statusCode}) {
           getCoffes();
@@ -92,7 +91,7 @@ class CoffeHouse with ChangeNotifier {
         onError: ({required int statusCode}) {},
         controller: 'coffe',
         data: '{"id":' + coffe.id.toString() + '}');
-
+    coffes.remove(coffe);
     notifyListeners();
   }
 
